@@ -38,7 +38,7 @@
         <div id="panel" class="absolute top-0 left-0 z-[1000] h-full w-full transform md:w-[450px] bg-gray-100 p-4 overflow-y-auto transition-transform duration-300 -translate-x-full md:translate-x-0">
             <div class="flex items-center mb-2">
                 <i class="fas fa-chart-bar text-3xl text-blue-600 mr-3"></i>
-                <h1 class="text-xl font-bold text-gray-800">Tính điểm Chất lượng Sống</h1>
+                <h1 class="text-xl font-bold text-gray-800">Khảo sát Chất lượng Sống</h1>
             </div>
             <div id="survey-counter" class="text-center bg-blue-100 text-blue-800 text-sm font-semibold mb-4 px-3 py-2 rounded-lg">
                 <i class="fas fa-spinner fa-spin mr-2"></i> Đang tải dữ liệu...
@@ -151,6 +151,13 @@
                         </div>
                     </details>
 
+                    <details>
+                        <summary>Ghi chú thêm (tùy chọn)</summary>
+                        <div class="p-3 border border-t-0 rounded-b-md">
+                            <textarea id="user-notes" class="w-full p-2 border rounded-md" rows="4" placeholder="Bạn có muốn chia sẻ thêm điều gì không?"></textarea>
+                        </div>
+                    </details>
+
                     <div class="pt-2">
                         <label class="flex items-center">
                             <input type="checkbox" id="consent-checkbox" required class="mr-2 h-4 w-4">
@@ -211,7 +218,7 @@
         <div class="bg-white p-8 rounded-lg shadow-xl w-full max-w-md mx-auto">
             <div class="text-center">
                 <i class="fas fa-award text-5xl text-yellow-500 mb-4"></i>
-                <h2 class="text-2xl font-bold text-gray-800 mb-2">Kết quả Chất lượng Sống của bạn</h2>
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">Điểm Chất lượng Sống của bạn</h2>
                 <p class="text-gray-600 mb-6">Cảm ơn bạn đã hoàn thành khảo sát! Dưới đây là điểm số của bạn (thang điểm 100).</p>
             </div>
             <div class="space-y-3 text-gray-700">
@@ -339,19 +346,19 @@
             { id: 'q11', text: '11. Bạn có chấp nhận được ngoại hình của bạn không?', options: ['Không', 'Ít', 'Trung bình', 'Tương đối', 'Hoàn toàn'] },
             { id: 'q12', text: '12. Bạn có đủ tiền cho nhu cầu cá nhân không?', options: ['Không', 'Ít', 'Trung bình', 'Tương đối', 'Hoàn toàn'] },
             { id: 'q13', text: '13. Thông tin bạn cần có được cập nhật hàng ngày không?', options: ['Không', 'Ít', 'Trung bình', 'Tương đối', 'Hoàn toàn'] },
-            { id: 'q14', text: '14. Bạn có thời gian cho vui chơi giải trí không?', options: ['Không', 'Ít', 'Trung bình', 'Nhiều', 'Rất nhiều'] },
+            { id: 'q14', text: '14. Bạn có cơ hội tham gia các hoạt động giải trí đến mức nào?', options: ['Không', 'Ít', 'Trung bình', 'Nhiều', 'Rất nhiều'] },
             { id: 'q15', text: '15. Bạn có đi lại được tốt không?', options: ['Rất tồi', 'Tồi', 'Trung bình', 'Tốt', 'Rất tốt'] },
             { id: 'q16', text: '16. Bạn hài lòng với giấc ngủ của mình ntn?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
-            { id: 'q17', text: '17. Bạn hài lòng với khả năng sinh hoạt hàng ngày ntn?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
+            { id: 'q17', text: '17. Bạn hài lòng với khả năng thực hiện các hoạt động sống hàng ngày ntn?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
             { id: 'q18', text: '18. Bạn hài lòng về khả năng làm việc của bạn ntn?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
             { id: 'q19', text: '19. Bạn hài lòng với chính bản thân bạn ntn?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
-            { id: 'q20', text: '20. Bạn hài lòng về mối quan hệ cá nhân ntn?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
-            { id: 'q21', text: '21. Bạn hài lòng về cuộc sống gia đình ntn?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
+            { id: 'q20', text: '20. Bạn hài lòng về các mối quan hệ cá nhân ntn?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
+            { id: 'q21', text: '21. Bạn hài lòng về đời sống tình dục ntn?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
             { id: 'q22', text: '22. Bạn hài lòng về sự giúp đỡ từ bạn bè ntn?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
-            { id: 'q23', text: '23. Bạn hài lòng về điều kiện vật chất nơi ở ntn?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
+            { id: 'q23', text: '23. Bạn hài lòng về điều kiện vật chất nơi bạn sống ntn?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
             { id: 'q24', text: '24. Bạn hài lòng về việc tiếp cận dịch vụ y tế ntn?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
-            { id: 'q25', text: '25. Bạn hài lòng về việc đi lại của bạn ntn?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
-            { id: 'q26', text: '26. Bạn có thường xuyên có cảm giác Không tốt không?', options: ['Không bao giờ', 'Hiếm khi', 'Thi thoảng', 'Rất thường xuyên', 'Liên tục'], reverse: true },
+            { id: 'q25', text: '25. Bạn hài lòng về phương tiện đi lại của bạn ntn?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
+            { id: 'q26', text: '26. Bạn có thường xuyên có cảm giác tiêu cực  không?', options: ['Không bao giờ', 'Hiếm khi', 'Thi thoảng', 'Rất thường xuyên', 'Liên tục'], reverse: true },
         ];
 
         function generateWhoqolForm() {
@@ -436,7 +443,7 @@
             function loadSavedLocations() {
                 onSnapshot(locationsCollection, (snapshot) => {
                     locationMarkers.clearLayers();
-                    surveyCounter.innerHTML = `<i class="fas fa-check-circle mr-2"></i> Tổng số lượt khảo sát: <span class="font-bold text-lg">${snapshot.size}</span>`;
+                    surveyCounter.innerHTML = `<i class="fas fa-check-circle mr-2"></i> Tổng số khảo sát: <span class="font-bold text-lg">${snapshot.size}</span>`;
                     const sortedDocs = snapshot.docs.sort((a, b) => (a.data().createdAt?.seconds || 0) - (b.data().createdAt?.seconds || 0));
 
                     sortedDocs.forEach((doc, index) => {
@@ -461,7 +468,7 @@
                 const lat = parseFloat(latitudeInput.value);
                 const lng = parseFloat(longitudeInput.value);
 
-                if (!lat || !lng) return showToast("Vui lòng đánh dấu vị trí nơi ở của bạn trước khi lưu.", 'error');
+                if (!lat || !lng) return showToast("Vui lòng chọn vị trí nơi ở của bạn trước khi lưu.", 'error');
                 if (!userId) return showToast("Chưa xác thực người dùng. Vui lòng đợi.", 'error');
                 
                 const surveyData = {
@@ -478,6 +485,7 @@
                     accessGreen: document.getElementById('access-green').value,
                     noisePollution: document.getElementById('noise-pollution').value,
                     airPollution: document.getElementById('air-pollution').value,
+                    userNotes: document.getElementById('user-notes').value,
                     whoqol: whoqolQuestions.reduce((acc, q) => {
                         acc[q.id] = document.getElementById(q.id).value;
                         return acc;
@@ -502,7 +510,7 @@
         }
 
         async function callGeminiForAnalysis() {
-            if (!selectedCoords) return showToast("Vui lòng đánh dấu nơi ở của bạn trên bản đồ trước.", 'error');
+            if (!selectedCoords) return showToast("Vui lòng chọn một điểm trên bản đồ trước.", 'error');
             
             aiResultsModal.classList.remove('hidden');
             aiResultsContent.innerHTML = `<div class="text-center"><i class="fas fa-spinner fa-spin text-3xl text-indigo-500"></i><p>Đang tải phân tích...</p></div>`;
@@ -578,7 +586,7 @@
         
         showFormBtn.addEventListener('click', () => {
             if (!selectedCoords) {
-                showToast('Vui lòng đánh dấu nơi ở trên bản đồ trước khi bắt đầu khảo sát.', 'info');
+                showToast('Vui lòng chọn một điểm trên bản đồ trước khi bắt đầu khảo sát.', 'info');
                 return;
             }
             map.getContainer().style.cursor = 'crosshair';
