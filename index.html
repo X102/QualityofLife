@@ -21,7 +21,6 @@
         ::-webkit-scrollbar-track { background: #f1f1f1; }
         ::-webkit-scrollbar-thumb { background: #888; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #555; }
-        #map { height: 100vh; }
         /* Tùy chỉnh popup của Leaflet */
         .leaflet-popup-content-wrapper { border-radius: 8px; }
         .custom-popup .leaflet-popup-content { margin: 15px; width: auto; }
@@ -34,12 +33,14 @@
     </style>
 </head>
 <body class="overflow-hidden">
-    <div class="flex flex-col md:flex-row h-screen font-sans">
+    <div class="relative h-screen w-screen font-sans">
         <!-- Bảng điều khiển bên trái -->
-        <div class="w-full md:w-[450px] bg-gray-100 p-4 overflow-y-auto flex-shrink-0" style="height: 100vh;">
+        <div id="panel" class="absolute top-0 left-0 z-[1000] h-full w-full transform md:w-[450px] bg-gray-100 p-4 overflow-y-auto transition-transform duration-300 -translate-x-full md:translate-x-0">
             <div class="flex items-center mb-2">
                 <i class="fas fa-chart-bar text-3xl text-blue-600 mr-3"></i>
                 <h1 class="text-xl font-bold text-gray-800">Khảo sát Chất lượng Sống</h1>
+                 <!-- Nút đóng cho mobile -->
+                <button id="close-panel-btn" class="md:hidden ml-auto text-2xl text-gray-500 hover:text-gray-800">&times;</button>
             </div>
             <div id="survey-counter" class="text-center bg-blue-100 text-blue-800 text-sm font-semibold mb-4 px-3 py-2 rounded-lg">
                 <i class="fas fa-spinner fa-spin mr-2"></i> Đang tải dữ liệu...
@@ -168,7 +169,7 @@
                 </form>
             </div>
             
-            <div class="space-y-2">
+            <div id="action-buttons" class="space-y-2">
                 <button id="locate-me-btn" class="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition duration-300 shadow-lg flex items-center justify-center">
                     <i class="fas fa-location-crosshairs mr-2"></i> Tìm vị trí của tôi
                 </button>
@@ -183,24 +184,32 @@
              <!-- Thông tin dự án -->
             <div class="mt-6 bg-white p-4 rounded-lg shadow-md text-xs text-gray-600">
                 <h3 class="font-semibold text-sm text-gray-800 mb-2">Thông tin về dự án</h3>
-                <p class="mb-2"><strong>Mục đích:</strong> Khảo sát này nhằm thu thập dữ liệu để nghiên cứu về Chất lượng Sống (Quality of Life - QoL) của người dân trong bối cảnh đô thị hóa tại Việt Nam. Chúng tôi sử dụng bộ câu hỏi của WHOQOL-BREF (World Health Organization Quality of Life - Brief), được Tổ chức Y tế Thế giới (WHO) phát triển để đánh giá chất lượng sống (QoL) một cách nhanh chóng và toàn diện. Nó được thiết kế cho các nghiên cứu và ứng dụng lâm sàng, tập trung vào nhận thức chủ quan của cá nhân về vị trí của họ trong cuộc sống, trong bối cảnh văn hóa và hệ giá trị.</p>
-                <p class="mb-2"><strong>Cam kết:</strong> Mọi dữ liệu bạn cung cấp đều được ẩn danh, bảo mật và chỉ được sử dụng cho mục đích nghiên cứu khoa học, phi lợi nhuận. Chúng tôi cam kết tuân thủ các quy định về bảo vệ dữ liệu cá nhân. Kết quả nghiên cứu sẽ được cập nhật trên website này ngay khi chúng tôi hoàn thành nghiên cứu.</p>
-                <p class="mb-2"><strong>Thời gian bắt đầu khảo sát:</strong> 13.09.2025 </p>
-                <p class="mb-2"><strong>Thời gian cập nhật nội dung web lần cuối:</strong> 13.09.2025 </p>
-                <p><strong>Liên hệ:</strong> Mọi yêu cầu và thắc mắc và mong muốn hợp tác xin vui lòng gửi về trucnhutran1999@gmail.com.</p>
+                <p class="mb-2"><strong>Cám ơn bạn</strong> đã dành thời gian quý báu để tham gia khảo sát về chất lượng sống trong bối cảnh đô thị hóa tại Việt Nam!</p>
+                <p class="mb-2"><strong>Mục đích:</strong> Khảo sát này nhằm thu thập dữ liệu để nghiên cứu về Chất lượng Sống (Quality of Life - QoL) của người dân trong bối cảnh đô thị hóa tại Việt Nam. Dữ liệu từ khảo sát sẽ được kết hợp với các nguồn dữ liệu khác (vệ tinh, GIS,..) để hỗ trợ xây dựng các giải pháp cải thiện môi trường sống, dịch vụ đô thị và chính sách phát triển bền vững, mang lại lợi ích thiết thực cho cộng đồng. Chúng tôi sử dụng bộ câu hỏi WHOQOL-BREF (World Health Organization Quality of Life - Brief), được Tổ chức Y tế Thế giới (WHO) phát triển để đánh giá chất lượng sống một cách nhanh chóng và toàn diện. Nó được thiết kế cho các nghiên cứu và ứng dụng lâm sàng, tập trung vào nhận thức chủ quan của cá nhân về vị trí của họ trong cuộc sống, trong bối cảnh văn hóa và hệ giá trị.</p>
+                <p class="mb-2"><strong>Cam kết:</strong> Đây là trang web mã nguồn mở. Mọi dữ liệu bạn cung cấp đều được ẩn danh, bảo mật và chỉ được sử dụng cho mục đích nghiên cứu khoa học, phi lợi nhuận. Chúng tôi cam kết tuân thủ các quy định về bảo vệ dữ liệu cá nhân. Kết quả nghiên cứu sẽ được cập nhật trên website này ngay khi chúng tôi hoàn thành nghiên cứu.</p>
+                <p class="mb-2"><strong>Để đảm bảo kết quả chính xác</strong>, xin bạn vui lòng điền thông tin trung thực, đúng với tình trạng cá nhân, và tránh cố ý cung cấp thông tin sai lệch. Hackers vui lòng không lợi dụng các lỗ hổng bảo mật.</p>
+                <p class="mb-2"><strong>Bắt đầu khảo sát:</strong> 13.09.2025 </p>
+                <p class="mb-2"><strong>Cập nhật nội dung lần cuối:</strong> 13.09.2025 </p>
+                <p class="mb-2"><strong>Liên hệ:</strong> Mọi yêu cầu, thắc mắc và mong muốn hợp tác xin vui lòng gửi về trucnhutran1999@gmail.com.</p>
+                <p class="mb-2"><strong>Nhóm nghiên cứu của các du học sinh Việt Nam tại Đại học Trắc địa và bản đồ Mát-xcơ-va (LB Nga) chân thành cảm ơn và chúc bạn sức khỏe, hạnh phúc!</strong> </p>
             </div>
         </div>
 
         <!-- Bản đồ -->
-        <div id="map" class="flex-grow"></div>
+        <div id="map" class="h-full w-full"></div>
+
+         <!-- Nút mở bảng điều khiển cho mobile -->
+        <button id="open-panel-btn" class="md:hidden absolute top-4 left-4 z-[999] bg-white p-2 rounded-full shadow-lg text-xl">
+            <i class="fas fa-bars"></i>
+        </button>
     </div>
     
-    <div id="toast-notification" class="fixed bottom-5 right-5 bg-green-500 text-white py-2 px-4 rounded-lg shadow-xl transition-transform transform translate-x-full duration-500">
+    <div id="toast-notification" class="fixed bottom-5 right-5 bg-green-500 text-white py-2 px-4 rounded-lg shadow-xl transition-transform transform translate-x-full duration-500 z-[2000]">
         <p id="toast-message"></p>
     </div>
     
     <!-- Modal hiển thị kết quả QoL -->
-    <div id="qol-results-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center hidden z-[1000]">
+    <div id="qol-results-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center hidden z-[2000]">
         <div class="bg-white p-8 rounded-lg shadow-xl w-full max-w-md mx-auto">
             <div class="text-center">
                 <i class="fas fa-award text-5xl text-yellow-500 mb-4"></i>
@@ -236,7 +245,7 @@
     </div>
     
     <!-- Modal hiển thị kết quả AI -->
-    <div id="ai-results-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center hidden z-[1000]">
+    <div id="ai-results-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center hidden z-[2000]">
         <div class="bg-white p-8 rounded-lg shadow-xl w-full max-w-2xl mx-auto">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-2xl font-bold text-gray-800">AI phân tích khu vực (Chỉ để tham khảo)</h2>
@@ -249,17 +258,15 @@
     </div>
 
     <script type="module">
-    const firebaseConfig = {
-  apiKey: "AIzaSyCgDGcADnzYOLz_t2MwCkGC2eD5qIDCmes",
-  authDomain: "qolvn-2a71a.firebaseapp.com",
-  projectId: "qolvn-2a71a",
-  storageBucket: "qolvn-2a71a.firebasestorage.app",
-  messagingSenderId: "819016202400",
-  appId: "1:819016202400:web:5b7081e5cced149d6971c5",
-  measurementId: "G-KT5CV6FQ9H"
-        };
-
-        // Cung cấp một hoặc nhiều khóa API của Gemini. Ứng dụng sẽ tự động thử khóa tiếp theo nếu một khóa bị lỗi.
+        const firebaseConfig = {
+            apiKey: "AIzaSyCgDGcADnzYOLz_t2MwCkGC2eD5qIDCmes",
+            authDomain: "qolvn-2a71a.firebaseapp.com",
+            projectId: "qolvn-2a71a",
+            storageBucket: "qolvn-2a71a.firebasestorage.app",
+            messagingSenderId: "819016202400",
+            appId: "1:819016202400:web:5b7081e5cced149d6971c5",
+            measurementId: "G-KT5CV6FQ9H"
+};
         const geminiApiKeys = [
           "AIzaSyBnWBmbz8twphuLTMw92I4CFHrB2IpcTlI", // <-- THAY THẾ (BẮT BUỘC)
           "AIzaSyByK7ww7MRpFmUHJU7Mz70qj6OhjUFYMCg", // <-- THAY THẾ (Tùy chọn)
@@ -287,17 +294,20 @@
             if(firebaseErrorMsg) firebaseErrorMsg.classList.remove('hidden');
         }
         
-        const map = L.map('map').setView([16.047079, 108.206230], 6);
+        const map = L.map('map', { zoomControl: false }).setView([16.047079, 108.206230], 6);
+        L.control.zoom({ position: 'topright' }).addTo(map);
+
         const streetMap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '© OpenStreetMap' }).addTo(map);
         const satelliteMap = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { maxZoom: 19, attribution: '© Esri' });
         const hybridMap = L.tileLayer('https://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}',{ maxZoom: 20, subdomains:['mt0','mt1','mt2','mt3'], attribution: '© Google Maps' });
         let currentBaseLayer = streetMap;
 
+        const panel = document.getElementById('panel');
+        const openPanelBtn = document.getElementById('open-panel-btn');
+        const closePanelBtn = document.getElementById('close-panel-btn');
         const addPointFormContainer = document.getElementById('add-point-form-container');
+        const actionButtons = document.getElementById('action-buttons');
         const locationForm = document.getElementById('location-form');
-        const showFormBtn = document.getElementById('show-form-btn');
-        const locateMeBtn = document.getElementById('locate-me-btn');
-        const cancelFormBtn = document.getElementById('cancel-form-btn');
         const latitudeInput = document.getElementById('latitude');
         const longitudeInput = document.getElementById('longitude');
         const surveyCounter = document.getElementById('survey-counter');
@@ -310,9 +320,11 @@
         const searchInput = document.getElementById('search-input');
         const searchBtn = document.getElementById('search-btn');
         const searchResultsContainer = document.getElementById('search-results');
+        const locateMeBtn = document.getElementById('locate-me-btn');
+        const showFormBtn = document.getElementById('show-form-btn');
+        const cancelFormBtn = document.getElementById('cancel-form-btn');
         
         let tempMarker = null;
-        let isSurveyMode = false;
         let selectedCoords = null;
 
         const whoqolQuestions = [
@@ -542,41 +554,41 @@
                 map.addLayer(currentBaseLayer);
             });
         });
+        
+        openPanelBtn.addEventListener('click', () => panel.classList.remove('-translate-x-full'));
+        closePanelBtn.addEventListener('click', () => panel.classList.add('-translate-x-full'));
 
-        function toggleSurveyForm(enable) {
-            isSurveyMode = enable;
-            if (enable) {
-                map.getContainer().style.cursor = 'crosshair';
+        function setSurveyMode(enable) {
+            if(enable){
                 addPointFormContainer.classList.remove('hidden');
-                showFormBtn.classList.add('hidden');
-                locateMeBtn.classList.add('hidden');
-                aiAnalyzeBtn.classList.add('hidden');
+                actionButtons.classList.add('hidden');
             } else {
-                map.getContainer().style.cursor = '';
                 addPointFormContainer.classList.add('hidden');
-                showFormBtn.classList.remove('hidden');
-                locateMeBtn.classList.remove('hidden');
-                aiAnalyzeBtn.classList.remove('hidden');
-                if (tempMarker) {
-                    map.removeLayer(tempMarker);
-                    tempMarker = null;
-                }
-                selectedCoords = null;
-                aiAnalyzeBtn.disabled = true;
+                actionButtons.classList.remove('hidden');
             }
         }
         
         showFormBtn.addEventListener('click', () => {
-            showToast('Click vào bản đồ để chọn vị trí khảo sát.', 'info');
-            toggleSurveyForm(true);
+            if (!selectedCoords) {
+                showToast('Vui lòng chọn một điểm trên bản đồ trước khi bắt đầu khảo sát.', 'info');
+                return;
+            }
+            map.getContainer().style.cursor = 'crosshair';
+            setSurveyMode(true);
         });
+
         cancelFormBtn.addEventListener('click', () => resetForm());
 
         function resetForm() {
             locationForm.reset();
             latitudeInput.value = '';
             longitudeInput.value = '';
-            toggleSurveyForm(false);
+            selectedCoords = null;
+            aiAnalyzeBtn.disabled = true;
+            if (tempMarker) map.removeLayer(tempMarker);
+            tempMarker = null;
+            map.getContainer().style.cursor = '';
+            setSurveyMode(false);
         }
 
         map.on('click', (e) => {
@@ -591,10 +603,10 @@
             aiAnalyzeBtn.disabled = false;
             if (tempMarker) map.removeLayer(tempMarker);
             tempMarker = L.marker([lat, lng]).addTo(map);
-            if (isSurveyMode) {
-                tempMarker.bindPopup("Vị trí đã chọn. Hãy điền khảo sát bên trái.").openPopup();
-            } else {
+            if (addPointFormContainer.classList.contains('hidden')) {
                  tempMarker.bindPopup("Vị trí đã chọn. Hãy bắt đầu khảo sát hoặc phân tích AI").openPopup();
+            } else {
+                 tempMarker.bindPopup("Vị trí đã chọn. Hãy điền khảo sát bên trái.").openPopup();
             }
         }
         
@@ -624,7 +636,6 @@
         searchBtn.addEventListener('click', searchAddress);
         searchInput.addEventListener('input', searchAddress);
 
-
         searchResultsContainer.addEventListener('click', (e) => {
             const target = e.target.closest('div[data-lat]');
             if (target) {
@@ -634,20 +645,19 @@
                 setMarkerAndPosition(lat, lon);
                 searchResultsContainer.innerHTML = '';
                 searchInput.value = '';
-                if (!isSurveyMode) {
-                    if (tempMarker) tempMarker.bindPopup("Vị trí đã chọn. Nhấn nút Phân tích AI để xem thông tin.").openPopup();
-                }
+                if(window.innerWidth < 768) panel.classList.add('-translate-x-full');
             }
         });
 
         locateMeBtn.addEventListener('click', () => {
             if (!navigator.geolocation) return showToast('Trình duyệt không hỗ trợ định vị.', 'error');
             showToast('Đang tìm vị trí của bạn...', 'info');
+             if(window.innerWidth < 768) panel.classList.add('-translate-x-full');
             navigator.geolocation.getCurrentPosition(
                 (position) => {
                     const { latitude, longitude } = position.coords;
                     map.setView([latitude, longitude], 15);
-                    toggleSurveyForm(true);
+                    setSurveyMode(true);
                     setMarkerAndPosition(latitude, longitude);
                 },
                 (error) => showToast('Không thể lấy vị trí.', 'error')
