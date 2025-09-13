@@ -70,7 +70,7 @@
                 <p class="text-xs text-gray-500 mb-3">Dữ liệu được bảo mật và chỉ dùng cho mục đích nghiên cứu.</p>
                 <div id="firebase-error-msg" class="hidden bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-md relative mb-3" role="alert">
                     <strong class="font-bold">Lỗi CSDL!</strong>
-                    <span class="block sm:inline">Không thể kết nối. Vui lòng kiểm tra `firebaseConfig` trong code.</span>
+                    <span class="block sm:inline">Không thể kết nối. kiểm tra `firebaseConfig` trong code.</span>
                 </div>
                 <form id="location-form" class="space-y-4">
                     <input type="hidden" id="latitude">
@@ -191,11 +191,11 @@
                 <h3 class="font-semibold text-sm text-gray-800 mb-2">Thông tin về dự án</h3>
                 <p class="mb-2"><strong>Cám ơn bạn</strong> đã dành thời gian quý báu để tham gia khảo sát về chất lượng sống trong bối cảnh đô thị hóa tại Việt Nam!</p>
                 <p class="mb-2"><strong>Mục đích:</strong> Khảo sát này nhằm thu thập dữ liệu để nghiên cứu về Chất lượng Sống (Quality of Life - QoL) của người dân trong bối cảnh đô thị hóa tại Việt Nam. Dữ liệu từ khảo sát sẽ được kết hợp với các nguồn dữ liệu khác (dữ liệu vệ tinh, GIS, thống kê..) để hỗ trợ xây dựng các giải pháp cải thiện môi trường sống, dịch vụ đô thị và chính sách phát triển bền vững, mang lại lợi ích thiết thực cho cộng đồng. Chúng tôi sử dụng bộ câu hỏi WHOQOL-BREF (World Health Organization Quality of Life - Brief), được Tổ chức Y tế Thế giới (WHO) phát triển để đánh giá chất lượng sống một cách nhanh chóng và toàn diện. Nó được thiết kế cho các nghiên cứu và ứng dụng lâm sàng, tập trung vào nhận thức chủ quan của cá nhân về vị trí của họ trong cuộc sống, trong bối cảnh văn hóa và hệ giá trị.</p>
-                <p class="mb-2"><strong>Để có dữ liệu chất lượng cao</strong>, xin bạn vui lòng điền thông tin trung thực, đúng với tình trạng cá nhân và tránh cung cấp thông tin nhạy cảm hoặc quá sai lệch. Hackers xin vui lòng không lợi dụng các lỗ hổng bảo mật.</p>
+                <p class="mb-2"><strong>Để có dữ liệu chất lượng cao</strong>, xin bạn điền thông tin trung thực, đúng với tình trạng cá nhân và tránh cung cấp thông tin nhạy cảm hoặc quá sai lệch. Hackers xin không lợi dụng các lỗ hổng bảo mật.</p>
                 <p class="mb-2"><strong>Cam kết:</strong> Đây là trang web mã nguồn mở. Mọi dữ liệu bạn cung cấp đều được ẩn danh, bảo mật và chỉ được sử dụng cho mục đích nghiên cứu khoa học, phi lợi nhuận. Chúng tôi cam kết tuân thủ các quy định về bảo vệ dữ liệu cá nhân. Kết quả nghiên cứu sẽ được cập nhật trên website này ngay khi chúng tôi hoàn thành nghiên cứu.</p>
                 <p class="mb-2"><strong>Bắt đầu khảo sát:</strong> 13.09.2025 </p>
                 <p class="mb-2"><strong>Cập nhật nội dung lần cuối:</strong> 13.09.2025 </p>
-                <p class="mb-2"><strong>Liên hệ:</strong> Mọi yêu cầu, thắc mắc và mong muốn hợp tác xin vui lòng gửi về trucnhutran1999@gmail.com.</p>
+                <p class="mb-2"><strong>Liên hệ:</strong> Mọi yêu cầu, thắc mắc và mong muốn hợp tác xin gửi về trucnhutran1999@gmail.com.</p>
                 <p class="mb-2"><strong>Nhóm nghiên cứu của các du học sinh Việt Nam tại Đại học Trắc địa và bản đồ Mát-xcơ-va (LB Nga) chân thành cảm ơn và chúc bạn sức khỏe, hạnh phúc!</strong> </p>
             </div>
         </div>
@@ -468,8 +468,8 @@
                 const lat = parseFloat(latitudeInput.value);
                 const lng = parseFloat(longitudeInput.value);
 
-                if (!lat || !lng) return showToast("Vui lòng chọn vị trí nơi ở của bạn trước khi lưu.", 'error');
-                if (!userId) return showToast("Chưa xác thực người dùng. Vui lòng đợi.", 'error');
+                if (!lat || !lng) return showToast("chọn vị trí nơi ở của bạn trước khi lưu.", 'error');
+                if (!userId) return showToast("Chưa xác thực người dùng. đợi.", 'error');
                 
                 const surveyData = {
                     age: document.getElementById('age').value,
@@ -510,7 +510,7 @@
         }
 
         async function callGeminiForAnalysis() {
-            if (!selectedCoords) return showToast("Vui lòng chọn một điểm trên bản đồ trước.", 'error');
+            if (!selectedCoords) return showToast("Vui lòng đánh dấu vị trí nhà bạn trên bản đồ trước.", 'error');
             
             aiResultsModal.classList.remove('hidden');
             aiResultsContent.innerHTML = `<div class="text-center"><i class="fas fa-spinner fa-spin text-3xl text-indigo-500"></i><p>Đang tải phân tích...</p></div>`;
@@ -586,7 +586,7 @@
         
         showFormBtn.addEventListener('click', () => {
             if (!selectedCoords) {
-                showToast('Vui lòng chọn một điểm trên bản đồ trước khi bắt đầu khảo sát.', 'info');
+                showToast('Vui lòng đánh dấu vị trí nhà bạn trên bản đồ trước khi bắt đầu khảo sát.', 'info');
                 return;
             }
             map.getContainer().style.cursor = 'crosshair';
