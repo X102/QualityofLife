@@ -38,9 +38,7 @@
         <div id="panel" class="absolute top-0 left-0 z-[1000] h-full w-full transform md:w-[450px] bg-gray-100 p-4 overflow-y-auto transition-transform duration-300 -translate-x-full md:translate-x-0">
             <div class="flex items-center mb-2">
                 <i class="fas fa-chart-bar text-3xl text-blue-600 mr-3"></i>
-                <h1 class="text-xl font-bold text-gray-800">Khảo sát Chất lượng Sống</h1>
-                 <!-- Nút đóng cho mobile -->
-                <button id="close-panel-btn" class="md:hidden ml-auto text-2xl text-gray-500 hover:text-gray-800">&times;</button>
+                <h1 class="text-xl font-bold text-gray-800">Tính điểm Chất lượng Sống</h1>
             </div>
             <div id="survey-counter" class="text-center bg-blue-100 text-blue-800 text-sm font-semibold mb-4 px-3 py-2 rounded-lg">
                 <i class="fas fa-spinner fa-spin mr-2"></i> Đang tải dữ liệu...
@@ -185,9 +183,9 @@
             <div class="mt-6 bg-white p-4 rounded-lg shadow-md text-xs text-gray-600">
                 <h3 class="font-semibold text-sm text-gray-800 mb-2">Thông tin về dự án</h3>
                 <p class="mb-2"><strong>Cám ơn bạn</strong> đã dành thời gian quý báu để tham gia khảo sát về chất lượng sống trong bối cảnh đô thị hóa tại Việt Nam!</p>
-                <p class="mb-2"><strong>Mục đích:</strong> Khảo sát này nhằm thu thập dữ liệu để nghiên cứu về Chất lượng Sống (Quality of Life - QoL) của người dân trong bối cảnh đô thị hóa tại Việt Nam. Dữ liệu từ khảo sát sẽ được kết hợp với các nguồn dữ liệu khác (vệ tinh, GIS,..) để hỗ trợ xây dựng các giải pháp cải thiện môi trường sống, dịch vụ đô thị và chính sách phát triển bền vững, mang lại lợi ích thiết thực cho cộng đồng. Chúng tôi sử dụng bộ câu hỏi WHOQOL-BREF (World Health Organization Quality of Life - Brief), được Tổ chức Y tế Thế giới (WHO) phát triển để đánh giá chất lượng sống một cách nhanh chóng và toàn diện. Nó được thiết kế cho các nghiên cứu và ứng dụng lâm sàng, tập trung vào nhận thức chủ quan của cá nhân về vị trí của họ trong cuộc sống, trong bối cảnh văn hóa và hệ giá trị.</p>
+                <p class="mb-2"><strong>Mục đích:</strong> Khảo sát này nhằm thu thập dữ liệu để nghiên cứu về Chất lượng Sống (Quality of Life - QoL) của người dân trong bối cảnh đô thị hóa tại Việt Nam. Dữ liệu từ khảo sát sẽ được kết hợp với các nguồn dữ liệu khác (dữ liệu vệ tinh, GIS, thống kê..) để hỗ trợ xây dựng các giải pháp cải thiện môi trường sống, dịch vụ đô thị và chính sách phát triển bền vững, mang lại lợi ích thiết thực cho cộng đồng. Chúng tôi sử dụng bộ câu hỏi WHOQOL-BREF (World Health Organization Quality of Life - Brief), được Tổ chức Y tế Thế giới (WHO) phát triển để đánh giá chất lượng sống một cách nhanh chóng và toàn diện. Nó được thiết kế cho các nghiên cứu và ứng dụng lâm sàng, tập trung vào nhận thức chủ quan của cá nhân về vị trí của họ trong cuộc sống, trong bối cảnh văn hóa và hệ giá trị.</p>
+                <p class="mb-2"><strong>Để có dữ liệu chất lượng cao</strong>, xin bạn vui lòng điền thông tin trung thực, đúng với tình trạng cá nhân và tránh cung cấp thông tin nhạy cảm hoặc quá sai lệch. Hackers xin vui lòng không lợi dụng các lỗ hổng bảo mật.</p>
                 <p class="mb-2"><strong>Cam kết:</strong> Đây là trang web mã nguồn mở. Mọi dữ liệu bạn cung cấp đều được ẩn danh, bảo mật và chỉ được sử dụng cho mục đích nghiên cứu khoa học, phi lợi nhuận. Chúng tôi cam kết tuân thủ các quy định về bảo vệ dữ liệu cá nhân. Kết quả nghiên cứu sẽ được cập nhật trên website này ngay khi chúng tôi hoàn thành nghiên cứu.</p>
-                <p class="mb-2"><strong>Để đảm bảo kết quả chính xác</strong>, xin bạn vui lòng điền thông tin trung thực, đúng với tình trạng cá nhân, và tránh cố ý cung cấp thông tin sai lệch. Hackers vui lòng không lợi dụng các lỗ hổng bảo mật.</p>
                 <p class="mb-2"><strong>Bắt đầu khảo sát:</strong> 13.09.2025 </p>
                 <p class="mb-2"><strong>Cập nhật nội dung lần cuối:</strong> 13.09.2025 </p>
                 <p class="mb-2"><strong>Liên hệ:</strong> Mọi yêu cầu, thắc mắc và mong muốn hợp tác xin vui lòng gửi về trucnhutran1999@gmail.com.</p>
@@ -198,13 +196,13 @@
         <!-- Bản đồ -->
         <div id="map" class="h-full w-full"></div>
 
-         <!-- Nút mở bảng điều khiển cho mobile -->
-        <button id="open-panel-btn" class="md:hidden absolute top-4 left-4 z-[999] bg-white p-2 rounded-full shadow-lg text-xl">
+         <!-- Nút mở/đóng bảng điều khiển cho mobile -->
+        <button id="panel-toggle-btn" class="md:hidden absolute top-4 left-4 z-[1001] bg-white p-2 rounded-full shadow-lg text-xl w-10 h-10 flex items-center justify-center">
             <i class="fas fa-bars"></i>
         </button>
     </div>
     
-    <div id="toast-notification" class="fixed bottom-5 right-5 bg-green-500 text-white py-2 px-4 rounded-lg shadow-xl transition-transform transform translate-x-full duration-500 z-[2000]">
+    <div id="toast-notification" class="fixed bottom-5 right-5 py-2 px-4 rounded-lg shadow-xl transition-transform transform translate-x-full duration-500 z-[2000]">
         <p id="toast-message"></p>
     </div>
     
@@ -274,6 +272,7 @@
           "YOUR_GEMINI_API_KEY_4", // <-- THAY THẾ (Tùy chọn)
           "YOUR_GEMINI_API_KEY_5", // <-- THAY THẾ (Tùy chọn)
         ];
+
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -303,8 +302,7 @@
         let currentBaseLayer = streetMap;
 
         const panel = document.getElementById('panel');
-        const openPanelBtn = document.getElementById('open-panel-btn');
-        const closePanelBtn = document.getElementById('close-panel-btn');
+        const panelToggleBtn = document.getElementById('panel-toggle-btn');
         const addPointFormContainer = document.getElementById('add-point-form-container');
         const actionButtons = document.getElementById('action-buttons');
         const locationForm = document.getElementById('location-form');
@@ -372,9 +370,18 @@
         function showToast(message, type = 'success') {
             const toast = document.getElementById('toast-notification');
             const toastMessage = document.getElementById('toast-message');
+            
+            toast.className = `fixed bottom-5 right-5 py-2 px-4 rounded-lg shadow-xl transition-transform transform duration-500 z-[2000]`;
+            
+            if (type === 'error') {
+                toast.classList.add('bg-white', 'text-red-700', 'border', 'border-red-300');
+            } else if (type === 'info') {
+                toast.classList.add('bg-white', 'text-blue-700', 'border', 'border-blue-300');
+            } else {
+                toast.classList.add('bg-white', 'text-green-700', 'border', 'border-green-300');
+            }
+            
             toastMessage.textContent = message;
-            let bgColor = type === 'error' ? 'bg-red-500' : (type === 'info' ? 'bg-blue-500' : 'bg-green-500');
-            toast.className = `fixed bottom-5 right-5 text-white py-2 px-4 rounded-lg shadow-xl transition-transform transform duration-500 z-[2000]`;
             toast.classList.remove('translate-x-full');
             setTimeout(() => toast.classList.add('translate-x-full'), 5000);
         }
@@ -429,7 +436,7 @@
             function loadSavedLocations() {
                 onSnapshot(locationsCollection, (snapshot) => {
                     locationMarkers.clearLayers();
-                    surveyCounter.innerHTML = `<i class="fas fa-check-circle mr-2"></i> Tổng số khảo sát: <span class="font-bold text-lg">${snapshot.size}</span>`;
+                    surveyCounter.innerHTML = `<i class="fas fa-check-circle mr-2"></i> Tổng số lượt khảo sát: <span class="font-bold text-lg">${snapshot.size}</span>`;
                     const sortedDocs = snapshot.docs.sort((a, b) => (a.data().createdAt?.seconds || 0) - (b.data().createdAt?.seconds || 0));
 
                     sortedDocs.forEach((doc, index) => {
@@ -454,7 +461,7 @@
                 const lat = parseFloat(latitudeInput.value);
                 const lng = parseFloat(longitudeInput.value);
 
-                if (!lat || !lng) return showToast("Vui lòng chọn vị trí nơi ở của bạn trước khi lưu.", 'error');
+                if (!lat || !lng) return showToast("Vui lòng đánh dấu vị trí nơi ở của bạn trước khi lưu.", 'error');
                 if (!userId) return showToast("Chưa xác thực người dùng. Vui lòng đợi.", 'error');
                 
                 const surveyData = {
@@ -495,7 +502,7 @@
         }
 
         async function callGeminiForAnalysis() {
-            if (!selectedCoords) return showToast("Vui lòng chọn một điểm trên bản đồ trước.", 'error');
+            if (!selectedCoords) return showToast("Vui lòng đánh dấu nơi ở của bạn trên bản đồ trước.", 'error');
             
             aiResultsModal.classList.remove('hidden');
             aiResultsContent.innerHTML = `<div class="text-center"><i class="fas fa-spinner fa-spin text-3xl text-indigo-500"></i><p>Đang tải phân tích...</p></div>`;
@@ -555,8 +562,9 @@
             });
         });
         
-        openPanelBtn.addEventListener('click', () => panel.classList.remove('-translate-x-full'));
-        closePanelBtn.addEventListener('click', () => panel.classList.add('-translate-x-full'));
+        panelToggleBtn.addEventListener('click', () => {
+            panel.classList.toggle('-translate-x-full');
+        });
 
         function setSurveyMode(enable) {
             if(enable){
@@ -570,11 +578,12 @@
         
         showFormBtn.addEventListener('click', () => {
             if (!selectedCoords) {
-                showToast('Vui lòng chọn một điểm trên bản đồ trước khi bắt đầu khảo sát.', 'info');
+                showToast('Vui lòng đánh dấu nơi ở trên bản đồ trước khi bắt đầu khảo sát.', 'info');
                 return;
             }
             map.getContainer().style.cursor = 'crosshair';
             setSurveyMode(true);
+             if(window.innerWidth < 768) panel.classList.remove('-translate-x-full');
         });
 
         cancelFormBtn.addEventListener('click', () => resetForm());
