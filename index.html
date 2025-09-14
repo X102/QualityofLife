@@ -30,23 +30,42 @@
         details > summary { cursor: pointer; font-weight: 600; padding: 0.5rem; background-color: #f3f4f6; border-radius: 0.25rem; transition: background-color 0.2s; }
         details > summary:hover { background-color: #e5e7eb; }
         details[open] > summary { border-bottom-left-radius: 0; border-bottom-right-radius: 0;}
+        /* Cải thiện khả năng đọc của Toast */
+        #toast-notification {
+            text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 <body class="overflow-hidden">
     <div class="relative h-screen w-screen font-sans">
         <!-- Bảng điều khiển bên trái -->
-        <div id="panel" class="absolute top-0 left-0 z-[1000] h-full w-full transform md:w-[450px] bg-gray-100 p-4 overflow-y-auto transition-transform duration-300 -translate-x-full md:translate-x-0">
+        <div id="panel" class="absolute top-0 left-0 z-[1000] h-full w-full transform md:w-[450px] bg-gray-100 p-4 overflow-y-auto transition-transform duration-300 md:translate-x-0">
             <div class="flex items-center mb-2">
                 <i class="fas fa-chart-bar text-3xl text-blue-600 mr-3"></i>
                 <h1 class="text-xl font-bold text-gray-800">Khảo sát Chất lượng Sống</h1>
+                 <!-- Nút đóng cho mobile -->
+                <button id="close-panel-btn" class="md:hidden ml-auto text-2xl text-gray-500 hover:text-gray-800">&times;</button>
             </div>
             <div id="survey-counter" class="text-center bg-blue-100 text-blue-800 text-sm font-semibold mb-4 px-3 py-2 rounded-lg">
                 <i class="fas fa-spinner fa-spin mr-2"></i> Đang tải dữ liệu...
             </div>
 
+            <div class="mt-6 bg-white p-4 rounded-lg shadow-md text-xs text-gray-600">
+                <h3 class="font-semibold text-sm text-gray-800 mb-2">Vui lòng thực hiện các bước khảo sát sau:</h3>
+                <p class="mb-2"><strong>Bước 1: Đánh dấu vị trí nơi ở của bạn trên bản đồ:</strong> </p>
+                <p class="mb-2">Bạn có thể chọn vị trí bằng 1 trong 3 cách sau:</p>
+                <p clasd="mb-2">    1. Tự tìm và <strong>click trên Map</strong>, hoặc</p>
+                <p clasd="mb-2">    2. Sử dụng <strong>thanh tìm kiếm địa chỉ</strong>, hoặc</p>
+                <p clasd="mb-2">    3. Nhấn nút <strong>Tự động định vị bằng GPS</strong> để lấy vị trí hiện tại (nếu bạn đang ở nhà).</p>
+                <p class="mb-2">Nhấn vào nút <strong>Menu</strong> ở góc trên bên trái để ẩn/hiện bản đồ trên điện thoại. Chúng tôi cần thông tin vị trí gần đúng của mọi người để lập bản đồ chỉ số Chất lượng sống.</p>
+                <p class="mb-2"><strong>Bước 2: Nhấn Bắt đầu khảo sát</strong> và điền thông tin các mục </p>
+                <p class="mb-2"><strong>Bước 3: Nhấn Hoàn thành khảo sát</strong> và chờ kết quả</p>
+                <p class="mb-2"><strong>Bước 4 (tuỳ chọn): Nhấn Phân tích khu vực bằng AI</strong> để tham khảo thông tin về khu vực bạn sống.</p>
+            </div>
+
             <!-- Chọn lớp bản đồ nền -->
-            <div class="bg-white p-4 rounded-lg shadow-md mb-4">
-                <h2 class="text-lg font-semibold mb-2 text-gray-700 flex items-center"><i class="fas fa-layer-group mr-2 text-gray-500"></i>Bản đồ nền</h2>
+            <div class="mt-6 bg-white p-4 rounded-lg shadow-md mb-4">
+                <h2 class="text-lg font-semibold mb-2 text-gray-700 flex items-center"><i class="fas fa-layer-group mr-2 text-gray-500"></i>Chọn giao diện bản đồ</h2>
                 <div class="flex flex-col space-y-2">
                     <label class="flex items-center"><input type="radio" name="base-layer" value="street" class="mr-2" checked> Đường phố (OSM)</label>
                     <label class="flex items-center"><input type="radio" name="base-layer" value="satellite" class="mr-2"> Vệ tinh (Esri)</label>
@@ -56,12 +75,20 @@
 
             <!-- Tính năng tìm kiếm địa điểm -->
             <div class="bg-white p-4 rounded-lg shadow-md mb-4">
-                <h2 class="text-lg font-semibold mb-2 text-gray-700 flex items-center"><i class="fas fa-search-location mr-2 text-gray-500"></i>Tìm kiếm địa điểm</h2>
+                <h2 class="text-lg font-semibold mb-2 text-gray-700 flex items-center"><i class="fas fa-search-location mr-2 text-gray-500"></i>Xác nhận địa chỉ bạn sống</h2>
                 <div class="flex space-x-2">
-                    <input type="text" id="search-input" class="w-full p-2 border rounded-md" placeholder="Nhập địa chỉ, ví dụ: Hồ Gươm, Hà Nội">
+                    <input type="text" id="search-input" class="w-full p-2 border rounded-md" placeholder="Nhập địa chỉ nơi bạn sống, ví dụ: Hoàn Kiếm, Hà Nội">
                     <button id="search-btn" class="bg-blue-500 text-white px-4 rounded-md hover:bg-blue-600"><i class="fas fa-search"></i></button>
                 </div>
                 <div id="search-results" class="mt-2 max-h-40 overflow-y-auto"></div>
+                <div class="flex items-center my-3">
+                    <hr class="flex-grow border-t border-gray-300">
+                    <span class="px-2 text-sm text-gray-500">Hoặc</span>
+                    <hr class="flex-grow border-t border-gray-300">
+                </div>
+                <button id="locate-me-btn" class="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition duration-300 shadow-lg flex items-center justify-center">
+                    <i class="fas fa-location-crosshairs mr-2"></i> Tự động định vị bằng GPS
+                </button>
             </div>
 
             <!-- Form thêm điểm mới -->
@@ -70,7 +97,7 @@
                 <p class="text-xs text-gray-500 mb-3">Dữ liệu được bảo mật và chỉ dùng cho mục đích nghiên cứu.</p>
                 <div id="firebase-error-msg" class="hidden bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-md relative mb-3" role="alert">
                     <strong class="font-bold">Lỗi CSDL!</strong>
-                    <span class="block sm:inline">Không thể kết nối. kiểm tra `firebaseConfig` trong code.</span>
+                    <span class="block sm:inline">Không thể kết nối. Vui lòng kiểm tra `firebaseConfig` trong code.</span>
                 </div>
                 <form id="location-form" class="space-y-4">
                     <input type="hidden" id="latitude">
@@ -150,8 +177,8 @@
                             <div id="whoqol-questions-container" class="space-y-3"></div>
                         </div>
                     </details>
-
-                    <details>
+                    
+                     <details>
                         <summary>Ghi chú thêm (tùy chọn)</summary>
                         <div class="p-3 border border-t-0 rounded-b-md">
                             <textarea id="user-notes" class="w-full p-2 border rounded-md" rows="4" placeholder="Bạn có muốn chia sẻ thêm điều gì không?"></textarea>
@@ -175,14 +202,11 @@
             </div>
             
             <div id="action-buttons" class="space-y-2">
-                <button id="locate-me-btn" class="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition duration-300 shadow-lg flex items-center justify-center">
-                    <i class="fas fa-location-crosshairs mr-2"></i> Tìm vị trí của tôi
-                </button>
                 <button id="show-form-btn" class="w-full bg-green-600 text-white py-2 rounded-md hover:bg-green-700 transition duration-300 shadow-lg flex items-center justify-center">
-                    <i class="fas fa-plus-circle mr-2"></i> Tính điểm Chất lượng Sống (QoL)
+                    <i class="fas fa-plus-circle mr-2"></i> Bắt đầu khảo sát
                 </button>
                  <button id="ai-analyze-btn" class="w-full bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700 transition duration-300 shadow-lg flex items-center justify-center disabled:bg-indigo-300 disabled:cursor-not-allowed" disabled>
-                    <i class="fas fa-magic-sparkles mr-2"></i> AI phân tích khu vực (Tham khảo)
+                    <i class="fas fa-magic-sparkles mr-2"></i> Phân tích khu vực bằng AI (Tham khảo)
                 </button>
             </div>
 
@@ -191,11 +215,11 @@
                 <h3 class="font-semibold text-sm text-gray-800 mb-2">Thông tin về dự án</h3>
                 <p class="mb-2"><strong>Cám ơn bạn</strong> đã dành thời gian quý báu để tham gia khảo sát về chất lượng sống trong bối cảnh đô thị hóa tại Việt Nam!</p>
                 <p class="mb-2"><strong>Mục đích:</strong> Khảo sát này nhằm thu thập dữ liệu để nghiên cứu về Chất lượng Sống (Quality of Life - QoL) của người dân trong bối cảnh đô thị hóa tại Việt Nam. Dữ liệu từ khảo sát sẽ được kết hợp với các nguồn dữ liệu khác (dữ liệu vệ tinh, GIS, thống kê..) để hỗ trợ xây dựng các giải pháp cải thiện môi trường sống, dịch vụ đô thị và chính sách phát triển bền vững, mang lại lợi ích thiết thực cho cộng đồng. Chúng tôi sử dụng bộ câu hỏi WHOQOL-BREF (World Health Organization Quality of Life - Brief), được Tổ chức Y tế Thế giới (WHO) phát triển để đánh giá chất lượng sống một cách nhanh chóng và toàn diện. Nó được thiết kế cho các nghiên cứu và ứng dụng lâm sàng, tập trung vào nhận thức chủ quan của cá nhân về vị trí của họ trong cuộc sống, trong bối cảnh văn hóa và hệ giá trị.</p>
-                <p class="mb-2"><strong>Để có dữ liệu chất lượng cao</strong>, xin bạn điền thông tin trung thực, đúng với tình trạng cá nhân và tránh cung cấp thông tin nhạy cảm hoặc quá sai lệch. Hackers xin không lợi dụng các lỗ hổng bảo mật.</p>
+                <p class="mb-2"><strong>Để có dữ liệu chất lượng cao</strong>, xin bạn vui lòng điền thông tin trung thực, đúng với tình trạng cá nhân và tránh cung cấp thông tin nhạy cảm hoặc quá sai lệch. Hackers xin vui lòng không lợi dụng các lỗ hổng bảo mật.</p>
                 <p class="mb-2"><strong>Cam kết:</strong> Đây là trang web mã nguồn mở. Mọi dữ liệu bạn cung cấp đều được ẩn danh, bảo mật và chỉ được sử dụng cho mục đích nghiên cứu khoa học, phi lợi nhuận. Chúng tôi cam kết tuân thủ các quy định về bảo vệ dữ liệu cá nhân. Kết quả nghiên cứu sẽ được cập nhật trên website này ngay khi chúng tôi hoàn thành nghiên cứu.</p>
                 <p class="mb-2"><strong>Bắt đầu khảo sát:</strong> 13.09.2025 </p>
                 <p class="mb-2"><strong>Cập nhật nội dung lần cuối:</strong> 13.09.2025 </p>
-                <p class="mb-2"><strong>Liên hệ:</strong> Mọi yêu cầu, thắc mắc và mong muốn hợp tác xin gửi về trucnhutran1999@gmail.com.</p>
+                <p class="mb-2"><strong>Liên hệ:</strong> Mọi yêu cầu, thắc mắc và mong muốn hợp tác xin vui lòng gửi về trucnhutran1999@gmail.com.</p>
                 <p class="mb-2"><strong>Nhóm nghiên cứu của các du học sinh Việt Nam tại Đại học Trắc địa và bản đồ Mát-xcơ-va (LB Nga) chân thành cảm ơn và chúc bạn sức khỏe, hạnh phúc!</strong> </p>
             </div>
         </div>
@@ -218,7 +242,7 @@
         <div class="bg-white p-8 rounded-lg shadow-xl w-full max-w-md mx-auto">
             <div class="text-center">
                 <i class="fas fa-award text-5xl text-yellow-500 mb-4"></i>
-                <h2 class="text-2xl font-bold text-gray-800 mb-2">Điểm Chất lượng Sống của bạn</h2>
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">Kết quả Chất lượng Sống của bạn</h2>
                 <p class="text-gray-600 mb-6">Cảm ơn bạn đã hoàn thành khảo sát! Dưới đây là điểm số của bạn (thang điểm 100).</p>
             </div>
             <div class="space-y-3 text-gray-700">
@@ -263,7 +287,7 @@
     </div>
 
     <script type="module">
-        const firebaseConfig = {
+const firebaseConfig = {
             apiKey: "AIzaSyCgDGcADnzYOLz_t2MwCkGC2eD5qIDCmes",
             authDomain: "qolvn-2a71a.firebaseapp.com",
             projectId: "qolvn-2a71a",
@@ -346,19 +370,19 @@
             { id: 'q11', text: '11. Bạn có chấp nhận được ngoại hình của bạn không?', options: ['Không', 'Ít', 'Trung bình', 'Tương đối', 'Hoàn toàn'] },
             { id: 'q12', text: '12. Bạn có đủ tiền cho nhu cầu cá nhân không?', options: ['Không', 'Ít', 'Trung bình', 'Tương đối', 'Hoàn toàn'] },
             { id: 'q13', text: '13. Thông tin bạn cần có được cập nhật hàng ngày không?', options: ['Không', 'Ít', 'Trung bình', 'Tương đối', 'Hoàn toàn'] },
-            { id: 'q14', text: '14. Bạn có cơ hội tham gia các hoạt động giải trí đến mức nào?', options: ['Không', 'Ít', 'Trung bình', 'Nhiều', 'Rất nhiều'] },
+            { id: 'q14', text: '14. Bạn có thời gian cho vui chơi giải trí không?', options: ['Không', 'Ít', 'Trung bình', 'Nhiều', 'Rất nhiều'] },
             { id: 'q15', text: '15. Bạn có đi lại được tốt không?', options: ['Rất tồi', 'Tồi', 'Trung bình', 'Tốt', 'Rất tốt'] },
             { id: 'q16', text: '16. Bạn hài lòng với giấc ngủ của mình ntn?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
-            { id: 'q17', text: '17. Bạn hài lòng với khả năng thực hiện các hoạt động sống hàng ngày ntn?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
+            { id: 'q17', text: '17. Bạn hài lòng với khả năng sinh hoạt hàng ngày ntn?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
             { id: 'q18', text: '18. Bạn hài lòng về khả năng làm việc của bạn ntn?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
             { id: 'q19', text: '19. Bạn hài lòng với chính bản thân bạn ntn?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
-            { id: 'q20', text: '20. Bạn hài lòng về các mối quan hệ cá nhân ntn?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
-            { id: 'q21', text: '21. Bạn hài lòng về đời sống tình dục ntn?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
+            { id: 'q20', text: '20. Bạn hài lòng về mối quan hệ cá nhân ntn?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
+            { id: 'q21', text: '21. Bạn hài lòng về cuộc sống gia đình ntn?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
             { id: 'q22', text: '22. Bạn hài lòng về sự giúp đỡ từ bạn bè ntn?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
-            { id: 'q23', text: '23. Bạn hài lòng về điều kiện vật chất nơi bạn sống ntn?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
+            { id: 'q23', text: '23. Bạn hài lòng về điều kiện vật chất nơi ở ntn?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
             { id: 'q24', text: '24. Bạn hài lòng về việc tiếp cận dịch vụ y tế ntn?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
-            { id: 'q25', text: '25. Bạn hài lòng về phương tiện đi lại của bạn ntn?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
-            { id: 'q26', text: '26. Bạn có thường xuyên có cảm giác tiêu cực  không?', options: ['Không bao giờ', 'Hiếm khi', 'Thi thoảng', 'Rất thường xuyên', 'Liên tục'], reverse: true },
+            { id: 'q25', text: '25. Bạn hài lòng về việc đi lại của bạn ntn?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
+            { id: 'q26', text: '26. Bạn có thường xuyên có cảm giác Không tốt không?', options: ['Không bao giờ', 'Hiếm khi', 'Thi thoảng', 'Rất thường xuyên', 'Liên tục'], reverse: true },
         ];
 
         function generateWhoqolForm() {
@@ -468,8 +492,8 @@
                 const lat = parseFloat(latitudeInput.value);
                 const lng = parseFloat(longitudeInput.value);
 
-                if (!lat || !lng) return showToast("chọn vị trí nơi ở của bạn trước khi lưu.", 'error');
-                if (!userId) return showToast("Chưa xác thực người dùng. đợi.", 'error');
+                if (!lat || !lng) return showToast("Vui lòng chọn vị trí nơi ở của bạn trước khi lưu.", 'error');
+                if (!userId) return showToast("Chưa xác thực người dùng. Vui lòng đợi.", 'error');
                 
                 const surveyData = {
                     age: document.getElementById('age').value,
@@ -510,7 +534,7 @@
         }
 
         async function callGeminiForAnalysis() {
-            if (!selectedCoords) return showToast("Vui lòng đánh dấu vị trí nhà bạn trên bản đồ trước.", 'error');
+            if (!selectedCoords) return showToast("Vui lòng chọn một điểm trên bản đồ trước.", 'error');
             
             aiResultsModal.classList.remove('hidden');
             aiResultsContent.innerHTML = `<div class="text-center"><i class="fas fa-spinner fa-spin text-3xl text-indigo-500"></i><p>Đang tải phân tích...</p></div>`;
@@ -586,7 +610,7 @@
         
         showFormBtn.addEventListener('click', () => {
             if (!selectedCoords) {
-                showToast('Vui lòng đánh dấu vị trí nhà bạn trên bản đồ trước khi bắt đầu khảo sát.', 'info');
+                showToast('Vui lòng chọn một điểm trên bản đồ trước khi bắt đầu khảo sát.', 'info');
                 return;
             }
             map.getContainer().style.cursor = 'crosshair';
@@ -680,6 +704,11 @@
                 (error) => showToast('Không thể lấy vị trí.', 'error')
             );
         });
+
+        // Mở panel mặc định trên điện thoại khi tải trang
+        if (window.innerWidth < 768) {
+            panel.classList.remove('-translate-x-full');
+        }
     </script>
 </body>
 </html>
