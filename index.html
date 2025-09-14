@@ -49,50 +49,9 @@
             <div id="survey-counter" class="text-center bg-blue-100 text-blue-800 text-sm font-semibold mb-4 px-3 py-2 rounded-lg">
                 <i class="fas fa-spinner fa-spin mr-2"></i> Đang tải dữ liệu...
             </div>
-
-            <div class="mt-6 bg-white p-4 rounded-lg shadow-md text-xs text-gray-600">
-                <h3 class="font-semibold text-sm text-gray-800 mb-2">Vui lòng thực hiện các bước khảo sát sau:</h3>
-                <p class="mb-2"><strong>Bước 1: Đánh dấu vị trí nơi ở của bạn trên bản đồ:</strong> </p>
-                <p class="mb-2">Bạn có thể chọn vị trí bằng 1 trong 3 cách sau:</p>
-                <p clasd="mb-2">    1. Tự tìm và <strong>click trên Map</strong>, hoặc</p>
-                <p clasd="mb-2">    2. Sử dụng <strong>thanh tìm kiếm địa chỉ</strong>, hoặc</p>
-                <p clasd="mb-2">    3. Nhấn nút <strong>Tự động định vị bằng GPS</strong> để lấy vị trí hiện tại (nếu bạn đang ở nhà).</p>
-                <p class="mb-2">Nhấn vào nút <strong>Menu</strong> ở góc trên bên trái để ẩn/hiện bản đồ trên điện thoại. Chúng tôi cần thông tin vị trí gần đúng của mọi người để lập bản đồ chỉ số Chất lượng sống.</p>
-                <p class="mb-2"><strong>Bước 2: Nhấn Bắt đầu khảo sát</strong> và điền thông tin các mục </p>
-                <p class="mb-2"><strong>Bước 3: Nhấn Hoàn thành khảo sát</strong> và chờ kết quả</p>
-                <p class="mb-2"><strong>Bước 4 (tuỳ chọn): Nhấn Phân tích khu vực bằng AI</strong> để tham khảo thông tin về khu vực bạn sống.</p>
-            </div>
-
-            <!-- Chọn lớp bản đồ nền -->
-            <div class="mt-6 bg-white p-4 rounded-lg shadow-md mb-4">
-                <h2 class="text-lg font-semibold mb-2 text-gray-700 flex items-center"><i class="fas fa-layer-group mr-2 text-gray-500"></i>Chọn giao diện bản đồ</h2>
-                <div class="flex flex-col space-y-2">
-                    <label class="flex items-center"><input type="radio" name="base-layer" value="street" class="mr-2" checked> Đường phố (OSM)</label>
-                    <label class="flex items-center"><input type="radio" name="base-layer" value="satellite" class="mr-2"> Vệ tinh (Esri)</label>
-                    <label class="flex items-center"><input type="radio" name="base-layer" value="hybrid" class="mr-2"> Vệ tinh + Địa danh (Google)</label>
-                </div>
-            </div>
-
-            <!-- Tính năng tìm kiếm địa điểm -->
-            <div class="bg-white p-4 rounded-lg shadow-md mb-4">
-                <h2 class="text-lg font-semibold mb-2 text-gray-700 flex items-center"><i class="fas fa-search-location mr-2 text-gray-500"></i>Xác nhận địa chỉ bạn sống</h2>
-                <div class="flex space-x-2">
-                    <input type="text" id="search-input" class="w-full p-2 border rounded-md" placeholder="Nhập địa chỉ nơi bạn sống, ví dụ: Hoàn Kiếm, Hà Nội">
-                    <button id="search-btn" class="bg-blue-500 text-white px-4 rounded-md hover:bg-blue-600"><i class="fas fa-search"></i></button>
-                </div>
-                <div id="search-results" class="mt-2 max-h-40 overflow-y-auto"></div>
-                <div class="flex items-center my-3">
-                    <hr class="flex-grow border-t border-gray-300">
-                    <span class="px-2 text-sm text-gray-500">Hoặc</span>
-                    <hr class="flex-grow border-t border-gray-300">
-                </div>
-                <button id="locate-me-btn" class="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition duration-300 shadow-lg flex items-center justify-center">
-                    <i class="fas fa-location-crosshairs mr-2"></i> Tự động định vị bằng GPS
-                </button>
-            </div>
-
+            
             <!-- Form thêm điểm mới -->
-            <div id="add-point-form-container" class="bg-white p-4 rounded-lg shadow-md hidden">
+            <div id="add-point-form-container" class="bg-white p-4 rounded-lg shadow-md hidden mt-4">
                 <h2 class="text-lg font-semibold mb-2 text-gray-700 flex items-center"><i class="fas fa-edit mr-2 text-red-500"></i>Nhập thông tin khảo sát</h2>
                 <p class="text-xs text-gray-500 mb-3">Dữ liệu được bảo mật và chỉ dùng cho mục đích nghiên cứu.</p>
                 <div id="firebase-error-msg" class="hidden bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-md relative mb-3" role="alert">
@@ -160,12 +119,12 @@
                                 </div>
                             </div>
                              <div>
-                                <label for="noise-pollution" class="block font-medium text-sm text-gray-600 mt-2">Mức độ ảnh hưởng bởi tiếng ồn</label>
-                                <select id="noise-pollution" class="w-full p-2 border rounded-md mt-1"><option>Thường xuyên</option><option>Thỉnh thoảng</option><option>Hiếm khi</option><option>Không bao giờ</option></select>
+                                <label for="noise-pollution" class="block font-medium text-sm text-gray-600 mt-2">Mức độ ảnh hưởng bởi tiếng ồn (1=Không bao giờ, 5=Thường xuyên)</label>
+                                <select id="noise-pollution" class="w-full p-2 border rounded-md mt-1"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select>
                             </div>
                             <div>
-                                <label for="air-pollution" class="block font-medium text-sm text-gray-600 mt-2">Mức độ ảnh hưởng bởi ô nhiễm không khí</label>
-                                <select id="air-pollution" class="w-full p-2 border rounded-md mt-1"><option>Thường xuyên</option><option>Thỉnh thoảng</option><option>Hiếm khi</option><option>Không bao giờ</option></select>
+                                <label for="air-pollution" class="block font-medium text-sm text-gray-600 mt-2">Mức độ ảnh hưởng bởi ô nhiễm không khí (1=Không bao giờ, 5=Thường xuyên)</label>
+                                <select id="air-pollution" class="w-full p-2 border rounded-md mt-1"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select>
                             </div>
                         </div>
                     </details>
@@ -173,7 +132,7 @@
                     <details>
                         <summary>Phần 2: Chất lượng cuộc sống (WHOQOL-BREF)</summary>
                         <div class="p-3 border border-t-0 rounded-b-md space-y-3 text-sm">
-                            <p class="text-xs italic text-gray-500">Các câu hỏi sau đây về cảm nhận của bạn trong 4 tuần trở lại đây.</p>
+                            <p class="text-xs italic text-gray-500">Các câu hỏi sau đây về cảm nhận của bạn trong <strong>4 tuần</strong> trở lại đây.</p>
                             <div id="whoqol-questions-container" class="space-y-3"></div>
                         </div>
                     </details>
@@ -201,30 +160,37 @@
                 </form>
             </div>
             
-            <div id="action-buttons" class="space-y-2">
+            <div id="action-buttons" class="space-y-2 mt-4">
+                 <button id="locate-me-btn" class="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition duration-300 shadow-lg flex items-center justify-center">
+                    <i class="fas fa-location-crosshairs mr-2"></i> Tự động định vị bằng GPS
+                </button>
                 <button id="show-form-btn" class="w-full bg-green-600 text-white py-2 rounded-md hover:bg-green-700 transition duration-300 shadow-lg flex items-center justify-center">
                     <i class="fas fa-plus-circle mr-2"></i> Bắt đầu khảo sát
                 </button>
-                 <button id="ai-analyze-btn" class="w-full bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700 transition duration-300 shadow-lg flex items-center justify-center disabled:bg-indigo-300 disabled:cursor-not-allowed" disabled>
-                    <i class="fas fa-magic-sparkles mr-2"></i> Phân tích khu vực bằng AI (Tham khảo)
-                </button>
             </div>
-
-             <!-- Thông tin dự án -->
             <div class="mt-6 bg-white p-4 rounded-lg shadow-md text-xs text-gray-600">
+                <h3 class="font-semibold text-sm text-gray-800 mb-2">Vui lòng thực hiện các bước khảo sát sau:</h3>
+                <p class="mb-2"><strong>Bước 1: Đánh dấu vị trí nơi ở của bạn trên bản đồ</strong> bằng cách:</p>
+                <p class="mb-1 ml-4">1. Tự tìm và <strong>đánh dấu trên Bản đồ</strong> địa chỉ sống của mình, hoặc</p>
+                <p class="mb-2 ml-4">2. Nhấn nút <strong>Tự động định vị bằng GPS</strong>, bật GPS trên thiết bị nếu bạn đang ở nhà.</p>
+                <p class="mb-2">Nhấn vào nút <strong>Menu</strong> ở góc trên bên trái để ẩn/hiện bản đồ trên điện thoại.</p>
+                <p class="mb-2"><strong>Bước 2: Nhấn Bắt đầu khảo sát</strong> và điền thông tin các mục. </p>
+                <p class="mb-2"><strong>Bước 3: Nhấn Hoàn thành khảo sát</strong> và chờ kết quả.</p>
+            </div>
+             <!-- Thông tin dự án -->
+            <div class="mt-6 bg-white p-4 rounded-lg shadow-md text-xs text-gray-600">          
                 <h3 class="font-semibold text-sm text-gray-800 mb-2">Thông tin về dự án</h3>
-                <p class="mb-2"><strong>Cám ơn bạn</strong> đã dành thời gian quý báu để tham gia khảo sát về chất lượng sống trong bối cảnh đô thị hóa tại Việt Nam!</p>
+                <p class="mb-2"><strong>Cám ơn bạn</strong> đã tham gia khảo sát về chất lượng sống trong bối cảnh đô thị hóa tại Việt Nam!</p>
                 <p class="mb-2"><strong>Mục đích:</strong> Khảo sát này nhằm thu thập dữ liệu để nghiên cứu về Chất lượng Sống (Quality of Life - QoL) của người dân trong bối cảnh đô thị hóa tại Việt Nam. Dữ liệu từ khảo sát sẽ được kết hợp với các nguồn dữ liệu khác (dữ liệu vệ tinh, GIS, thống kê..) để hỗ trợ xây dựng các giải pháp cải thiện môi trường sống, dịch vụ đô thị và chính sách phát triển bền vững, mang lại lợi ích thiết thực cho cộng đồng. Chúng tôi sử dụng bộ câu hỏi WHOQOL-BREF (World Health Organization Quality of Life - Brief), được Tổ chức Y tế Thế giới (WHO) phát triển để đánh giá chất lượng sống một cách nhanh chóng và toàn diện. Nó được thiết kế cho các nghiên cứu và ứng dụng lâm sàng, tập trung vào nhận thức chủ quan của cá nhân về vị trí của họ trong cuộc sống, trong bối cảnh văn hóa và hệ giá trị.</p>
                 <p class="mb-2"><strong>Để có dữ liệu chất lượng cao</strong>, xin bạn vui lòng điền thông tin trung thực, đúng với tình trạng cá nhân và tránh cung cấp thông tin nhạy cảm hoặc quá sai lệch. Hackers xin vui lòng không lợi dụng các lỗ hổng bảo mật.</p>
                 <p class="mb-2"><strong>Cam kết:</strong> Đây là trang web mã nguồn mở. Mọi dữ liệu bạn cung cấp đều được ẩn danh, bảo mật và chỉ được sử dụng cho mục đích nghiên cứu khoa học, phi lợi nhuận. Chúng tôi cam kết tuân thủ các quy định về bảo vệ dữ liệu cá nhân. Kết quả nghiên cứu sẽ được cập nhật trên website này ngay khi chúng tôi hoàn thành nghiên cứu.</p>
                 <p class="mb-2"><strong>Bắt đầu khảo sát:</strong> 13.09.2025 </p>
-                <p class="mb-2"><strong>Cập nhật nội dung lần cuối:</strong> 13.09.2025 </p>
+                <p class="mb-2"><strong>Cập nhật nội dung lần cuối:</strong> 14.09.2025 </p>
                 <p class="mb-2"><strong>Liên hệ:</strong> Mọi yêu cầu, thắc mắc và mong muốn hợp tác xin vui lòng gửi về trucnhutran1999@gmail.com.</p>
                 <p class="mb-2"><strong>Nhóm nghiên cứu của các du học sinh Việt Nam tại Đại học Trắc địa và bản đồ Mát-xcơ-va (LB Nga) chân thành cảm ơn và chúc bạn sức khỏe, hạnh phúc!</strong> </p>
             </div>
         </div>
 
-        <!-- Bản đồ -->
         <div id="map" class="h-full w-full"></div>
 
          <!-- Nút mở/đóng bảng điều khiển cho mobile -->
@@ -267,43 +233,26 @@
                     <span id="score-average" class="font-extrabold text-2xl">0</span>
                 </div>
             </div>
+             <div class="mt-6 text-center text-sm text-gray-600 border-t pt-4">
+                <p id="qol-interpretation"></p>
+            </div>
             <div class="mt-8 text-center">
                 <button id="close-qol-modal-btn" class="bg-gray-500 text-white px-6 py-2 rounded-md hover:bg-gray-600 transition duration-300">Đóng</button>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Modal hiển thị kết quả AI -->
-    <div id="ai-results-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center hidden z-[2000]">
-        <div class="bg-white p-8 rounded-lg shadow-xl w-full max-w-2xl mx-auto">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-2xl font-bold text-gray-800">AI phân tích khu vực (Chỉ để tham khảo)</h2>
-                <button id="close-ai-modal-btn" class="text-gray-500 hover:text-gray-800 text-2xl">&times;</button>
-            </div>
-            <div id="ai-results-content" class="text-gray-700 max-h-[60vh] overflow-y-auto pr-4 whitespace-pre-wrap">
-                <i class="fas fa-spinner fa-spin text-3xl text-indigo-500"></i> Đang tải phân tích...
             </div>
         </div>
     </div>
 
     <script type="module">
 const firebaseConfig = {
-            apiKey: "AIzaSyCgDGcADnzYOLz_t2MwCkGC2eD5qIDCmes",
-            authDomain: "qolvn-2a71a.firebaseapp.com",
-            projectId: "qolvn-2a71a",
-            storageBucket: "qolvn-2a71a.firebasestorage.app",
-            messagingSenderId: "819016202400",
-            appId: "1:819016202400:web:5b7081e5cced149d6971c5",
-            measurementId: "G-KT5CV6FQ9H"
+  apiKey: "AIzaSyCgDGcADnzYOLz_t2MwCkGC2eD5qIDCmes",
+  authDomain: "qolvn-2a71a.firebaseapp.com",
+  projectId: "qolvn-2a71a",
+  storageBucket: "qolvn-2a71a.firebasestorage.app",
+  messagingSenderId: "819016202400",
+  appId: "1:819016202400:web:5b7081e5cced149d6971c5",
+  measurementId: "G-KT5CV6FQ9H"
 };
-        const geminiApiKeys = [
-          "AIzaSyBnWBmbz8twphuLTMw92I4CFHrB2IpcTlI", // <-- THAY THẾ (BẮT BUỘC)
-          "AIzaSyByK7ww7MRpFmUHJU7Mz70qj6OhjUFYMCg", // <-- THAY THẾ (Tùy chọn)
-          "YOUR_GEMINI_API_KEY_3", // <-- THAY THẾ (Tùy chọn)
-          "YOUR_GEMINI_API_KEY_4", // <-- THAY THẾ (Tùy chọn)
-          "YOUR_GEMINI_API_KEY_5", // <-- THAY THẾ (Tùy chọn)
-        ];
-
+        
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -327,10 +276,7 @@ const firebaseConfig = {
         const map = L.map('map', { zoomControl: false }).setView([16.047079, 108.206230], 6);
         L.control.zoom({ position: 'topright' }).addTo(map);
 
-        const streetMap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '© OpenStreetMap' }).addTo(map);
-        const satelliteMap = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { maxZoom: 19, attribution: '© Esri' });
-        const hybridMap = L.tileLayer('https://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}',{ maxZoom: 20, subdomains:['mt0','mt1','mt2','mt3'], attribution: '© Google Maps' });
-        let currentBaseLayer = streetMap;
+        const hybridMap = L.tileLayer('https://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}',{ maxZoom: 20, subdomains:['mt0','mt1','mt2','mt3'], attribution: '© Google Maps' }).addTo(map);
 
         const panel = document.getElementById('panel');
         const panelToggleBtn = document.getElementById('panel-toggle-btn');
@@ -342,46 +288,40 @@ const firebaseConfig = {
         const surveyCounter = document.getElementById('survey-counter');
         const qolResultsModal = document.getElementById('qol-results-modal');
         const closeQolModalBtn = document.getElementById('close-qol-modal-btn');
-        const aiResultsModal = document.getElementById('ai-results-modal');
-        const closeAiModalBtn = document.getElementById('close-ai-modal-btn');
-        const aiResultsContent = document.getElementById('ai-results-content');
-        const aiAnalyzeBtn = document.getElementById('ai-analyze-btn');
-        const searchInput = document.getElementById('search-input');
-        const searchBtn = document.getElementById('search-btn');
-        const searchResultsContainer = document.getElementById('search-results');
         const locateMeBtn = document.getElementById('locate-me-btn');
         const showFormBtn = document.getElementById('show-form-btn');
         const cancelFormBtn = document.getElementById('cancel-form-btn');
+        const qolInterpretation = document.getElementById('qol-interpretation');
         
         let tempMarker = null;
         let selectedCoords = null;
 
         const whoqolQuestions = [
-            { id: 'q1', text: '1. Bạn đánh giá ntn về chất lượng cuộc sống của bạn?', options: ['Rất tồi', 'Tồi', 'Trung bình', 'Tốt', 'Rất tốt'] },
+            { id: 'q1', text: '1. Bạn đánh giá thế nào về chất lượng cuộc sống của bạn?', options: ['Rất tồi', 'Tồi', 'Trung bình', 'Tốt', 'Rất tốt'] },
             { id: 'q2', text: '2. Bạn có hài lòng với sức khỏe của bạn không?', options: ['Rất không hài lòng', 'Không hài lòng', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
-            { id: 'q3', text: '3. Thương tật thể xác cản trở bạn ntn?', options: ['Không', 'Ít', 'Trung bình', 'Nhiều', 'Rất nhiều'], reverse: true },
+            { id: 'q3', text: '3. Thương tật thể xác cản trở bạn thế nào?', options: ['Không', 'Ít', 'Trung bình', 'Nhiều', 'Rất nhiều'], reverse: true },
             { id: 'q4', text: '4. Bạn cần chăm sóc y tế ở mức độ nào?', options: ['Không', 'Ít', 'Trung bình', 'Nhiều', 'Rất nhiều'], reverse: true },
-            { id: 'q5', text: '5. Bạn hài lòng với cuộc sống hiện tại ntn?', options: ['Không', 'Ít', 'Trung bình', 'Nhiều', 'Rất nhiều'] },
+            { id: 'q5', text: '5. Bạn hài lòng với cuộc sống hiện tại thế nào?', options: ['Không', 'Ít', 'Trung bình', 'Nhiều', 'Rất nhiều'] },
             { id: 'q6', text: '6. Bạn có cảm thấy cuộc sống của bạn có ý nghĩa không?', options: ['Không', 'Ít', 'Trung bình', 'Nhiều', 'Rất nhiều'] },
-            { id: 'q7', text: '7. Khả năng tập trung của bạn ntn?', options: ['Không', 'Ít', 'Trung bình', 'Cao', 'Rất cao'] },
-            { id: 'q8', text: '8. Mức độ bạn cảm thấy an toàn trong cuộc sống là ntn?', options: ['Không', 'Ít', 'Trung bình', 'Cao', 'Rất cao'] },
-            { id: 'q9', text: '9. Môi trường sống của bạn lành mạnh ntn?', options: ['Không', 'Ít', 'Trung bình', 'Cao', 'Rất cao'] },
+            { id: 'q7', text: '7. Khả năng tập trung của bạn thế nào?', options: ['Không', 'Ít', 'Trung bình', 'Cao', 'Rất cao'] },
+            { id: 'q8', text: '8. Mức độ bạn cảm thấy an toàn trong cuộc sống là thế nào?', options: ['Không', 'Ít', 'Trung bình', 'Cao', 'Rất cao'] },
+            { id: 'q9', text: '9. Môi trường sống của bạn lành mạnh thế nào?', options: ['Không', 'Ít', 'Trung bình', 'Cao', 'Rất cao'] },
             { id: 'q10', text: '10. Bạn có cảm thấy đủ sức lực cho hoạt động thường ngày không?', options: ['Không', 'Ít', 'Trung bình', 'Tương đối', 'Hoàn toàn'] },
             { id: 'q11', text: '11. Bạn có chấp nhận được ngoại hình của bạn không?', options: ['Không', 'Ít', 'Trung bình', 'Tương đối', 'Hoàn toàn'] },
             { id: 'q12', text: '12. Bạn có đủ tiền cho nhu cầu cá nhân không?', options: ['Không', 'Ít', 'Trung bình', 'Tương đối', 'Hoàn toàn'] },
             { id: 'q13', text: '13. Thông tin bạn cần có được cập nhật hàng ngày không?', options: ['Không', 'Ít', 'Trung bình', 'Tương đối', 'Hoàn toàn'] },
             { id: 'q14', text: '14. Bạn có vui chơi giải trí không?', options: ['Không', 'Ít', 'Trung bình', 'Nhiều', 'Rất nhiều'] },
             { id: 'q15', text: '15. Bạn có đi lại được tốt không?', options: ['Rất tồi', 'Tồi', 'Trung bình', 'Tốt', 'Rất tốt'] },
-            { id: 'q16', text: '16. Bạn hài lòng với giấc ngủ của mình ntn?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
-            { id: 'q17', text: '17. Bạn hài lòng với khả năng sinh hoạt hàng ngày ntn?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
-            { id: 'q18', text: '18. Bạn hài lòng về khả năng làm việc của bạn ntn?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
-            { id: 'q19', text: '19. Bạn hài lòng với chính bản thân bạn ntn?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
-            { id: 'q20', text: '20. Bạn hài lòng về mối quan hệ cá nhân ntn?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
-            { id: 'q21', text: '21. Bạn hài lòng về đời sống tình dục ntn?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
-            { id: 'q22', text: '22. Bạn hài lòng về sự giúp đỡ từ bạn bè ntn?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
-            { id: 'q23', text: '23. Bạn hài lòng về điều kiện vật chất nơi ở ntn?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
-            { id: 'q24', text: '24. Bạn hài lòng về việc tiếp cận dịch vụ y tế ntn?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
-            { id: 'q25', text: '25. Bạn hài lòng về phương tiện đi lại của bạn ntn?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
+            { id: 'q16', text: '16. Bạn hài lòng với giấc ngủ của mình thế nào?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
+            { id: 'q17', text: '17. Bạn hài lòng với khả năng sinh hoạt hàng ngày thế nào?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
+            { id: 'q18', text: '18. Bạn hài lòng về khả năng làm việc của bạn thế nào?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
+            { id: 'q19', text: '19. Bạn hài lòng với chính bản thân bạn thế nào?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
+            { id: 'q20', text: '20. Bạn hài lòng về mối quan hệ cá nhân thế nào?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
+            { id: 'q21', text: '21. Bạn hài lòng về đời sống tình dục thế nào?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
+            { id: 'q22', text: '22. Bạn hài lòng về sự giúp đỡ từ bạn bè thế nào?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
+            { id: 'q23', text: '23. Bạn hài lòng về điều kiện vật chất nơi ở thế nào?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
+            { id: 'q24', text: '24. Bạn hài lòng về việc tiếp cận dịch vụ y tế thế nào?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
+            { id: 'q25', text: '25. Bạn hài lòng về phương tiện đi lại của bạn thế nào?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
             { id: 'q26', text: '26. Bạn có thường xuyên có cảm giác tiêu cực không?', options: ['Không bao giờ', 'Hiếm khi', 'Thi thoảng', 'Rất thường xuyên', 'Liên tục'], reverse: true },
         ];
 
@@ -450,10 +390,21 @@ const firebaseConfig = {
             document.getElementById('score-social').textContent = scores.social.toFixed(1);
             document.getElementById('score-environment').textContent = scores.environment.toFixed(1);
             document.getElementById('score-average').textContent = scores.average.toFixed(1);
+            
+            const avg = scores.average;
+            let interpretationText = "Điểm số này cho thấy chất lượng sống của bạn ở mức kém. Có nhiều vấn đề nghiêm trọng cần được giải quyết. Hãy liên hệ với chúng tôi hoặc các tổ chức uy tín để được hỗ trợ.";
+            if (avg >= 85) {
+                interpretationText = "Mức điểm này cho thấy chất lượng sống của bạn đang ở mức rất tốt. Bạn có sự hài lòng cao với hầu hết các khía cạnh trong cuộc sống.";
+            } else if (avg >= 70) {
+                 interpretationText = "Mức điểm này cho thấy chất lượng sống của bạn đang ở mức tốt. Hầu hết các khía cạnh đều ổn, tuy nhiên vẫn còn một vài lĩnh vực có thể cải thiện.";
+            } else if (avg < 50) {
+                 interpretationText = "Mức điểm này cho thấy chất lượng sống của bạn đang ở mức trung bình. Có thể bạn đang đối mặt với nhiều khó khăn trong các khía cạnh khác nhau của cuộc sống.";
+            }
+            qolInterpretation.textContent = interpretationText;
+
             qolResultsModal.classList.remove('hidden');
         }
         closeQolModalBtn.addEventListener('click', () => qolResultsModal.classList.add('hidden'));
-        closeAiModalBtn.addEventListener('click', () => aiResultsModal.classList.add('hidden'));
 
         if (firebaseReady) {
             const locationsCollection = collection(db, 'locations');
@@ -467,7 +418,7 @@ const firebaseConfig = {
             function loadSavedLocations() {
                 onSnapshot(locationsCollection, (snapshot) => {
                     locationMarkers.clearLayers();
-                    surveyCounter.innerHTML = `<i class="fas fa-check-circle mr-2"></i> Tổng số khảo sát: <span class="font-bold text-lg">${snapshot.size}</span>`;
+                    surveyCounter.innerHTML = `<i class="fas fa-check-circle mr-2"></i> Tổng số lượt đã khảo sát: <span class="font-bold text-lg">${snapshot.size}</span>`;
                     const sortedDocs = snapshot.docs.sort((a, b) => (a.data().createdAt?.seconds || 0) - (b.data().createdAt?.seconds || 0));
 
                     sortedDocs.forEach((doc, index) => {
@@ -492,7 +443,7 @@ const firebaseConfig = {
                 const lat = parseFloat(latitudeInput.value);
                 const lng = parseFloat(longitudeInput.value);
 
-                if (!lat || !lng) return showToast("Vui lòng chọn vị trí nơi ở của bạn trước khi lưu.", 'error');
+                if (!lat || !lng) return showToast("Vui lòng đánh dấu vị trí nơi ở của bạn trước khi lưu.", 'error');
                 if (!userId) return showToast("Chưa xác thực người dùng. Vui lòng đợi.", 'error');
                 
                 const surveyData = {
@@ -533,64 +484,17 @@ const firebaseConfig = {
              locationForm.querySelector('button[type="submit"]').disabled = true;
         }
 
-        async function callGeminiForAnalysis() {
-            if (!selectedCoords) return showToast("Vui lòng đánh dấu vị trí nhà bạn trên bản đồ trước.", 'error');
-            
-            aiResultsModal.classList.remove('hidden');
-            aiResultsContent.innerHTML = `<div class="text-center"><i class="fas fa-spinner fa-spin text-3xl text-indigo-500"></i><p>Đang tải phân tích...</p></div>`;
-
-            const { lat, lng } = selectedCoords;
-            const userQuery = `Bạn là một trợ lý phân tích địa phương chuyên sâu. Sử dụng công cụ tìm kiếm của Google (bao gồm Google Maps và Open Street Map), hãy cung cấp một báo cáo chi tiết về vị trí có tọa độ: Vĩ độ ${lat}, Kinh độ ${lng}. Báo cáo cần bao gồm các mục sau theo đúng thứ tự:
-
-1.  **Báo cáo thời tiết (thời gian thực):**
-    * Nhiệt độ hiện tại (°C).
-    * Tình trạng thời tiết (Nắng, Mây, Mưa...).
-    * Độ ẩm (%).
-    * Tốc độ gió (km/h).
-
-2.  **Thông tin xung quanh (bán kính ~1km):**
-    * Liệt kê các tiện ích nổi bật gần đó (ví dụ: trường học, bệnh viện, chợ, siêu thị, trạm xe buýt).
-    * Khu vực này có đặc điểm gì chung (ví dụ: khu dân cư sầm uất, khu công nghiệp, làng quê yên tĩnh)?
-
-3.  **Tổng hợp đánh giá & Bình luận:**
-    * Dựa trên các bình luận trên Google Maps và các trang web đánh giá địa điểm khác, người ta nói gì về vị trí này hoặc các địa điểm lân cận? (ví dụ: "Quán ăn X được khen ngợi về đồ ăn ngon", "Khu vực này thường xuyên kẹt xe", "Công viên Y được đánh giá là sạch sẽ").`;
-            
-            const validKeys = geminiApiKeys.filter(key => key && !key.startsWith("YOUR_GEMINI_API_KEY"));
-            if (validKeys.length === 0) {
-                aiResultsContent.textContent = "Lỗi: Vui lòng cấu hình API Key trong code.";
-                return;
-            }
-
-            let successfulResponse = null;
-            for (const apiKey of validKeys) {
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
-                const payload = { contents: [{ parts: [{ text: userQuery }] }], tools: [{ "google_search": {} }] };
-                try {
-                    const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-                    if (response.ok) {
-                        successfulResponse = await response.json();
-                        break; 
-                    }
-                } catch (error) { console.error(`Lỗi mạng với API Key ...${apiKey.slice(-4)}:`, error); }
-            }
-
-            if (successfulResponse) {
-                aiResultsContent.textContent = successfulResponse.candidates?.[0]?.content?.parts?.[0]?.text || "Không có nội dung trả về.";
-            } else {
-                aiResultsContent.textContent = "Tính năng AI tạm thời không khả dụng. Tất cả các khóa API đều đã lỗi.";
-            }
-        }
-        aiAnalyzeBtn.addEventListener('click', callGeminiForAnalysis);
-
         document.querySelectorAll('input[name="base-layer"]').forEach(radio => {
             radio.addEventListener('change', (e) => {
                 map.removeLayer(currentBaseLayer);
+                let newLayer;
                 switch(e.target.value) {
-                    case 'satellite': currentBaseLayer = satelliteMap; break;
-                    case 'hybrid': currentBaseLayer = hybridMap; break;
-                    default: currentBaseLayer = streetMap;
+                    case 'satellite': newLayer = satelliteMap; break;
+                    case 'hybrid': newLayer = hybridMap; break;
+                    default: newLayer = streetMap;
                 }
-                map.addLayer(currentBaseLayer);
+                newLayer.addTo(map);
+                currentBaseLayer = newLayer;
             });
         });
         
@@ -610,12 +514,12 @@ const firebaseConfig = {
         
         showFormBtn.addEventListener('click', () => {
             if (!selectedCoords) {
-                showToast('Vui lòng đánh dấu vị trí nhà bạn trên bản đồ trước khi bắt đầu khảo sát.', 'info');
+                showToast('Vui lòng đánh dấu vị trí nơi ở của bạn trên bản đồ trước khi bắt đầu khảo sát.', 'info');
                 return;
             }
             map.getContainer().style.cursor = 'crosshair';
             setSurveyMode(true);
-             if(window.innerWidth < 768) panel.classList.remove('-translate-x-full');
+             if(window.innerWidth < 451) panel.classList.remove('-translate-x-full');
         });
 
         cancelFormBtn.addEventListener('click', () => resetForm());
@@ -625,7 +529,6 @@ const firebaseConfig = {
             latitudeInput.value = '';
             longitudeInput.value = '';
             selectedCoords = null;
-            aiAnalyzeBtn.disabled = true;
             if (tempMarker) map.removeLayer(tempMarker);
             tempMarker = null;
             map.getContainer().style.cursor = '';
@@ -641,59 +544,19 @@ const firebaseConfig = {
             latitudeInput.value = lat;
             longitudeInput.value = lng;
             selectedCoords = {lat, lng};
-            aiAnalyzeBtn.disabled = false;
             if (tempMarker) map.removeLayer(tempMarker);
             tempMarker = L.marker([lat, lng]).addTo(map);
             if (addPointFormContainer.classList.contains('hidden')) {
-                 tempMarker.bindPopup("Vị trí đã chọn. Hãy bắt đầu khảo sát hoặc phân tích AI").openPopup();
+                 tempMarker.bindPopup("Vị trí đã chọn. Hãy bắt đầu khảo sát.").openPopup();
             } else {
                  tempMarker.bindPopup("Vị trí đã chọn. Hãy điền khảo sát bên trái.").openPopup();
             }
         }
         
-        async function searchAddress() {
-            const query = searchInput.value;
-            if (query.length < 3) {
-                 searchResultsContainer.innerHTML = '';
-                 return;
-            }
-            const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&countrycodes=vn&limit=5`;
-            try {
-                const response = await fetch(url);
-                const data = await response.json();
-                if (data && data.length > 0) {
-                    searchResultsContainer.innerHTML = data.map(result => 
-                        `<div class="p-2 border-b cursor-pointer hover:bg-gray-100 text-sm" data-lat="${result.lat}" data-lon="${result.lon}">
-                            ${result.display_name}
-                        </div>`
-                    ).join('');
-                } else {
-                    searchResultsContainer.innerHTML = `<p class="p-2 text-sm text-gray-500">Không tìm thấy kết quả.</p>`;
-                }
-            } catch (error) {
-                searchResultsContainer.innerHTML = `<p class="p-2 text-sm text-red-500">Lỗi khi tìm kiếm.</p>`;
-            }
-        }
-        searchBtn.addEventListener('click', searchAddress);
-        searchInput.addEventListener('input', searchAddress);
-
-        searchResultsContainer.addEventListener('click', (e) => {
-            const target = e.target.closest('div[data-lat]');
-            if (target) {
-                const lat = parseFloat(target.dataset.lat);
-                const lon = parseFloat(target.dataset.lon);
-                map.setView([lat, lon], 15);
-                setMarkerAndPosition(lat, lon);
-                searchResultsContainer.innerHTML = '';
-                searchInput.value = '';
-                if(window.innerWidth < 768) panel.classList.add('-translate-x-full');
-            }
-        });
-
         locateMeBtn.addEventListener('click', () => {
             if (!navigator.geolocation) return showToast('Trình duyệt không hỗ trợ định vị.', 'error');
             showToast('Đang tìm vị trí của bạn...', 'info');
-             if(window.innerWidth < 768) panel.classList.add('-translate-x-full');
+             if(window.innerWidth < 451) panel.classList.add('-translate-x-full');
             navigator.geolocation.getCurrentPosition(
                 (position) => {
                     const { latitude, longitude } = position.coords;
@@ -706,7 +569,7 @@ const firebaseConfig = {
         });
 
         // Mở panel mặc định trên điện thoại khi tải trang
-        if (window.innerWidth < 768) {
+        if (window.innerWidth < 451) {
             panel.classList.remove('-translate-x-full');
         }
     </script>
