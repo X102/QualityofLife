@@ -534,7 +534,7 @@ const firebaseConfig = {
         }
 
         async function callGeminiForAnalysis() {
-            if (!selectedCoords) return showToast("Vui lòng chọn một điểm trên bản đồ trước.", 'error');
+            if (!selectedCoords) return showToast("Vui lòng đánh dấu vị trí nhà bạn trên bản đồ trước.", 'error');
             
             aiResultsModal.classList.remove('hidden');
             aiResultsContent.innerHTML = `<div class="text-center"><i class="fas fa-spinner fa-spin text-3xl text-indigo-500"></i><p>Đang tải phân tích...</p></div>`;
@@ -610,7 +610,7 @@ const firebaseConfig = {
         
         showFormBtn.addEventListener('click', () => {
             if (!selectedCoords) {
-                showToast('Vui lòng chọn một điểm trên bản đồ trước khi bắt đầu khảo sát.', 'info');
+                showToast('Vui lòng đánh dấu vị trí nhà bạn trên bản đồ trước khi bắt đầu khảo sát.', 'info');
                 return;
             }
             map.getContainer().style.cursor = 'crosshair';
