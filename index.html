@@ -15,6 +15,12 @@
     <!-- Font Awesome cho biểu tượng -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
+    <!-- jsPDF không cần nữa, nhưng giữ để tránh lỗi nếu có tham chiếu khác -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <!-- Font Times New Roman (nếu đã thêm trước đó, giờ không cần nhưng giữ để tránh lỗi) -->
+    <script src="font-times-new-roman-normal.js"></script>
+
     <style>
         /* Tùy chỉnh thanh cuộn */
         ::-webkit-scrollbar { width: 8px; }
@@ -33,6 +39,41 @@
         /* Cải thiện khả năng đọc của Toast */
         #toast-notification {
             text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        /* Tooltip cho WHOQOL questions */
+        .whoqol-select {
+            position: relative;
+        }
+        .whoqol-select select {
+            cursor: help;
+        }
+        .whoqol-select::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+            z-index: 10;
+        }
+        .whoqol-select:hover::after {
+            opacity: 1;
+        }
+        /* Link styles */
+        .reference-link {
+            color: #3b82f6;
+            text-decoration: underline;
+        }
+        .reference-link:hover {
+            color: #1d4ed8;
         }
     </style>
 </head>
@@ -79,7 +120,7 @@
                             </div>
                             <div>
                                 <label for="marital-status" class="block font-medium text-sm text-gray-600">Tình trạng hôn nhân</label>
-                                <select id="marital-status" class="w-full p-2 border rounded-md mt-1"><option>Độc thân</option><option>Hẹn hò</option><option>Đã kết hôn</option><option>Ly hôn</option><option>Góa bụa</option><option>Khác</option></select>
+                                <select id="marital-status" class="w-full p-2 border rounded-md mt-1"><option>Độc thân</option><option>Đã kết hôn</option><option>Ly hôn</option><option>Góa bụa</option><option>Khác</option></select>
                             </div>
                             <div>
                                 <label for="education" class="block font-medium text-sm text-gray-600">Trình độ học vấn</label>
@@ -105,9 +146,42 @@
                                 <label for="income" class="block font-medium text-sm text-gray-600">Thu nhập trung bình cả gia đình/tháng</label>
                                 <select id="income" class="w-full p-2 border rounded-md mt-1"><option>&lt; 5 triệu</option><option>5 - 20 triệu</option><option>20 - 50 triệu</option><option>50 - 100 triệu</option><option>&gt; 100 triệu</option></select>
                             </div>
+
+                            <!-- Câu hỏi mới: Vị trí đại diện cho giai đoạn nào -->
                             <div>
-                                <label for="residence-duration" class="block font-medium text-sm text-gray-600">Thời gian sống tại nơi ở hiện tại</label>
+                                <label class="block font-medium text-sm text-gray-600">Vị trí bạn chọn và nội dung bạn điền khảo sát đại diện cho giai đoạn nào?</label>
+                                <div class="mt-1 space-y-2">
+                                    <label class="flex items-center"><input type="radio" name="residence-phase" value="current" class="mr-2"> Hiện tại (nơi sống hàng ngày)</label>
+                                    <label class="flex items-center"><input type="radio" name="residence-phase" value="birthplace" class="mr-2"> Nơi sinh ra/lớn lên</label>
+                                    <label class="flex items-center"><input type="radio" name="residence-phase" value="other" class="mr-2"> Khác (ghi rõ: <input type="text" id="residence-phase-other" class="ml-1 p-1 border rounded w-32" placeholder="Mô tả...">)</label>
+                                </div>
+                            </div>
+                            <div>
+                                <label for="residence-duration" class="block font-medium text-sm text-gray-600">Thời gian sống tại đây</label>
                                 <select id="residence-duration" class="w-full p-2 border rounded-md mt-1"><option>&lt; 1 năm</option><option>1-5 năm</option><option>6-10 năm</option><option>&gt; 10 năm</option></select>
+                            </div>
+                            <!-- Câu hỏi mới: Lý do di chuyển gần nhất -->
+                            <div>
+                                <label class="block font-medium text-sm text-gray-600">Lý do di chuyển gần nhất?</label>
+                                <div class="mt-1 space-y-2">
+                                    <label class="flex items-center"><input type="radio" name="migration-reason" value="work" class="mr-2"> Công việc</label>
+                                    <label class="flex items-center"><input type="radio" name="migration-reason" value="study" class="mr-2"> Học tập</label>
+                                    <label class="flex items-center"><input type="radio" name="migration-reason" value="family" class="mr-2"> Gia đình</label>
+                                    <label class="flex items-center"><input type="radio" name="migration-reason" value="none" class="mr-2"> Không di chuyển</label>
+                                    <label class="flex items-center"><input type="radio" name="migration-reason" value="other" class="mr-2"> Khác (ghi rõ: <input type="text" id="migration-reason-other" class="ml-1 p-1 border rounded w-32" placeholder="Mô tả...">)</label>
+                                </div>
+                            </div>
+                            <!-- Câu hỏi mới: Sức khỏe hiện tại - Cải thiện theo yêu cầu -->
+                            <div>
+                                <label class="block font-medium text-sm text-gray-600">Bạn hiện đang bệnh?</label>
+                                <div class="mt-1 space-y-2">
+                                    <label class="flex items-center"><input type="radio" name="current-illness" value="no" class="mr-2"> Không</label>
+                                    <label class="flex items-center"><input type="radio" name="current-illness" value="yes" class="mr-2"> Có</label>
+                                </div>
+                                <div id="illness-detail-container" class="hidden mt-2">
+                                    <label for="illness-detail" class="block font-medium text-sm text-gray-600">Nếu có điều gì đó không ổn với sức khỏe của bạn, bạn nghĩ đó là gì?</label>
+                                    <textarea id="illness-detail" class="w-full p-2 border rounded-md" rows="2" placeholder="Mô tả tình trạng sức khỏe..."></textarea>
+                                </div>
                             </div>
                             <div>
                                 <label class="block font-medium text-sm text-gray-600">Mức độ tiếp cận dịch vụ (1=rất kém, 5=rất tốt)</label>
@@ -132,15 +206,25 @@
                     <details>
                         <summary>Phần 2: Chất lượng cuộc sống (WHOQOL-BREF)</summary>
                         <div class="p-3 border border-t-0 rounded-b-md space-y-3 text-sm">
-                            <p class="text-xs italic text-gray-500">Các câu hỏi sau đây về cảm nhận của bạn trong <strong>4 tuần</strong> trở lại đây.</p>
+                            <p class="text-xs italic text-gray-500">Các câu hỏi sau đây về cảm nhận của bạn trong 4 tuần qua hoặc trong thời gian quá khứ ở đó</p>
                             <div id="whoqol-questions-container" class="space-y-3"></div>
                         </div>
                     </details>
                     
                      <details>
-                        <summary>Chia sẻ thêm (tùy chọn)</summary>
+                        <summary>Ghi chú thêm (tùy chọn)</summary>
                         <div class="p-3 border border-t-0 rounded-b-md">
-                            <textarea id="user-notes" class="w-full p-2 border rounded-md" rows="4" placeholder="Bạn có muốn chia sẻ thêm điều gì về môi trường và chất lượng cuộc sống quanh mình không?"></textarea>
+                            <textarea id="user-notes" class="w-full p-2 border rounded-md" rows="4" placeholder="Bạn có muốn chia sẻ thêm điều gì không?"></textarea>
+                            <div class="mt-3">
+                                <label class="flex items-center">
+                                    <input type="checkbox" id="follow-up-consent" class="mr-2 h-4 w-4">
+                                    <span class="text-xs text-gray-700">Tôi đồng ý được liên hệ sau 6 tháng để khảo sát lại (để theo dõi sự thay đổi QoL).</span>
+                                </label>
+                                <div id="email-container" class="hidden mt-2">
+                                    <label for="follow-up-email" class="block font-medium text-sm text-gray-600">Email liên hệ:</label>
+                                    <input type="email" id="follow-up-email" class="w-full p-2 border rounded-md" placeholder="Nhập email của bạn...">
+                                </div>
+                            </div>
                         </div>
                     </details>
 
@@ -170,23 +254,30 @@
             </div>
             <div class="mt-6 bg-white p-4 rounded-lg shadow-md text-xs text-gray-600">
                 <h3 class="font-semibold text-sm text-gray-800 mb-2">Vui lòng thực hiện các bước khảo sát sau:</h3>
-                <p class="mb-2"><strong>Bước 1: Đánh dấu vị trí nơi ở của bạn trên bản đồ (sai lệch không quá 500m)</strong> bằng cách:</p>
-                <p class="mb-1 ml-4">1. Tự tìm và <strong>đánh dấu trên Bản đồ</strong> địa chỉ sống của mình, hoặc</p>
-                <p class="mb-2 ml-4">2. Nhấn nút <strong>Tự động định vị bằng GPS</strong>, bật GPS trên thiết bị nếu bạn đang ở nhà.</p>
-                <p class="mb-2">Nhấn vào nút <strong>Menu</strong> ở góc trên bên trái để ẩn/hiện bản đồ trên điện thoại.</p>
+                <p class="mb-2"><strong>Bước 1: Đánh dấu vị trí nơi ở của bạn trên bản đồ</strong> (hoặc nơi bạn từng sống và muốn chia sẻ cảm nhận) bằng cách:</p>
+                <p class="mb-1 ml-4">1. Tự tìm và <strong>đánh dấu trên Bản đồ</strong>, hoặc</p>
+                <p class="mb-2 ml-4">2. Nhấn nút <strong>Tự động định vị bằng GPS</strong>, bật GPS trên thiết bị nếu bạn đang ở nhà.</p>               
                 <p class="mb-2"><strong>Bước 2: Nhấn Bắt đầu khảo sát</strong> và điền thông tin các mục. </p>
                 <p class="mb-2"><strong>Bước 3: Nhấn Hoàn thành khảo sát</strong> và chờ kết quả.</p>
+                <p class="mb-2"><strong>Lưu ý:</strong> Nhấn vào nút <strong>Menu</strong> ở góc trên bên trái để ẩn/hiện bản đồ trên điện thoại. Nếu bạn ngại cho biết địa chỉ chính xác nhà ở của mình, có thể đánh dấu lệch ra đường nhưng không nên xa quá <strong>100m</strong>.</p>
+
             </div>
-             <!-- Thông tin dự án -->
+             <!-- Thông tin dự án (thêm thông báo độ sâu và link WHOQOL-BREF) -->
             <div class="mt-6 bg-white p-4 rounded-lg shadow-md text-xs text-gray-600">          
                 <h3 class="font-semibold text-sm text-gray-800 mb-2">Thông tin về dự án</h3>
-                <p class="mb-2"><strong>Cám ơn bạn</strong> đã tham gia khảo sát về chất lượng sống trong bối cảnh đô thị hóa tại Việt Nam!</p>
-                <p class="mb-2"><strong>Mục đích:</strong> Khảo sát này nhằm thu thập dữ liệu để nghiên cứu về Chất lượng Sống (Quality of Life - QoL) của người dân trong bối cảnh đô thị hóa tại Việt Nam. Dữ liệu từ khảo sát sẽ được kết hợp với các nguồn dữ liệu khác (dữ liệu vệ tinh, GIS, thống kê..) để hỗ trợ xây dựng các giải pháp cải thiện môi trường sống, dịch vụ đô thị và chính sách phát triển bền vững, mang lại lợi ích thiết thực cho cộng đồng. Chúng tôi sử dụng bộ câu hỏi WHOQOL-BREF (World Health Organization Quality of Life - Brief), được Tổ chức Y tế Thế giới (WHO) phát triển để đánh giá chất lượng sống một cách nhanh chóng và toàn diện. </p>
-                <p class="mb-2"><strong>Để có dữ liệu chất lượng cao</strong>, xin bạn vui lòng điền thông tin trung thực, đúng với tình trạng cá nhân và tránh cung cấp thông tin nhạy cảm hoặc quá sai lệch. Hackers xin vui lòng không lợi dụng các lỗ hổng bảo mật.</p>
+                <p class="mb-2"><strong>Mục đích:</strong> Khảo sát này nhằm thu thập dữ liệu để nghiên cứu về Chất lượng Sống (Quality of Life - QoL) của người dân trong bối cảnh đô thị hóa tại Việt Nam. Chúng tôi sử dụng bộ câu hỏi WHOQOL-BREF (World Health Organization Quality of Life - Brief), được Tổ chức Y tế Thế giới (WHO) phát triển để đánh giá chất lượng sống một cách nhanh chóng và toàn diện.</p>
+                <p class="'mb-2">Theo hướng dẫn WHO, WHOQOL-BREF là công cụ sàng lọc ban đầu, không phải công cụ chẩn đoán toàn diện – nó cần kết hợp với dữ liệu khác (như viễn thám, GIS) để phân tích sâu hơn. Với dữ liệu hiện tại, chúng tôi có thể phân tích xu hướng (ví dụ: QoL thấp hơn ở khu đô thị ít cây xanh).</p>
+                <p class="mb-2"><strong>Về độ sâu của khảo sát và cơ sở xây dựng giải pháp:</strong>Dữ liệu hiện tại chủ yếu phản ánh thực trạng chủ quan và có thể chưa đủ sâu để xây dựng các giải pháp cụ thể cải thiện QoL. Để nâng cao chất lượng nghiên cứu, chúng tôi cần thu thập thêm dữ liệu theo thời gian (ví dụ: khảo sát lại sau 6 tháng) và kết hợp với dữ liệu vệ tinh, GIS để phân tích tác động của đô thị hóa. Nếu bạn quan tâm, chúng tôi rất mong nhận được email của bạn (gửi về <a href="mailto:trucnhutran1999@gmail.com" class="reference-link">trucnhutran1999@gmail.com</a>) để: <br>- Liên hệ khảo sát lại sau 6 tháng nhằm theo dõi sự thay đổi QoL. <br>- Thảo luận thêm về mục đích nghiên cứu hoặc hợp tác khác. <br>Dữ liệu của bạn sẽ được bảo mật và chỉ dùng cho mục đích khoa học.</p>
+                <p class="mb-2"><strong>Tham khảo thêm về WHOQOL-BREF:</strong></p>
+                <ul class="list-disc ml-4 space-y-1">
+                    <li><a href="https://www.who.int/tools/whoqol/whoqol-bref" target="_blank" class="reference-link">Trang chính thức WHO - Tải WHOQOL-BREF (các ngôn ngữ, bao gồm tiếng Việt)</a></li>
+                    <li><a href="https://iris.who.int/bitstream/handle/10665/63529/WHOQOL-BREF.pdf?sequence=1" target="_blank" class="reference-link">Hướng dẫn sử dụng và tính điểm (PDF từ WHO)</a></li>
+                    <li><a href="https://depts.washington.edu/seaqol/docs/WHOQOL-BREF%20and%20Scoring%20Instructions.pdf" target="_blank" class="reference-link">Hướng dẫn tính điểm chi tiết (University of Washington)</a></li>
+                </ul>
+                <p class="mb-2"><strong>Để có dữ liệu chất lượng cao</strong>, xin bạn vui lòng điền thông tin trung thực, đúng với tình trạng cá nhân và tránh cung cấp thông tin nhạy cảm hoặc quá sai lệch.</p>
                 <p class="mb-2"><strong>Cam kết:</strong> Đây là trang web mã nguồn mở. Mọi dữ liệu bạn cung cấp đều được ẩn danh, bảo mật và chỉ được sử dụng cho mục đích nghiên cứu khoa học, phi lợi nhuận. Chúng tôi cam kết tuân thủ các quy định về bảo vệ dữ liệu cá nhân. Kết quả nghiên cứu sẽ được cập nhật trên website này ngay khi chúng tôi hoàn thành nghiên cứu.</p>
                 <p class="mb-2"><strong>Bắt đầu khảo sát:</strong> 13.09.2025 </p>
-                <p class="mb-2"><strong>Cập nhật nội dung lần cuối:</strong> 14.09.2025 </p>
-                <p class="mb-2"><strong>Liên hệ:</strong> Mọi yêu cầu, thắc mắc và mong muốn hợp tác xin vui lòng gửi về trucnhutran1999@gmail.com.</p>
+                <p class="mb-2"><strong>Cập nhật nội dung lần cuối:</strong> 15.09.2025 </p>
                 <p class="mb-2"><strong>Nhóm nghiên cứu của các du học sinh Việt Nam tại Đại học Trắc địa và bản đồ Mát-xcơ-va (LB Nga) chân thành cảm ơn và chúc bạn sức khỏe, hạnh phúc!</strong> </p>
             </div>
         </div>
@@ -203,41 +294,62 @@
         <p id="toast-message"></p>
     </div>
     
-    <!-- Modal hiển thị kết quả QoL -->
+    <!-- Modal hiển thị kết quả QoL (mở rộng, bỏ nút tải PDF) -->
     <div id="qol-results-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center hidden z-[2000]">
-        <div class="bg-white p-8 rounded-lg shadow-xl w-full max-w-md mx-auto">
+        <div class="bg-white p-8 rounded-lg shadow-xl w-full max-w-2xl mx-auto max-h-screen overflow-y-auto">
             <div class="text-center">
                 <i class="fas fa-award text-5xl text-yellow-500 mb-4"></i>
                 <h2 class="text-2xl font-bold text-gray-800 mb-2">Kết quả Chất lượng Sống của bạn</h2>
-                <p class="text-gray-600 mb-6">Cảm ơn bạn đã hoàn thành khảo sát! Dưới đây là điểm số của bạn (thang điểm 100).</p>
+                <p class="text-gray-600 mb-6">Cảm ơn bạn đã hoàn thành khảo sát! Dưới đây là điểm số của bạn (thang 0-100, dựa trên WHOQOL-BREF). Điểm cao hơn cho thấy QoL tốt hơn. <br><strong>Tham khảo thêm:</strong> <a href="https://www.who.int/tools/whoqol/whoqol-bref" target="_blank" class="reference-link">Trang chính thức WHO</a> | <a href="https://iris.who.int/bitstream/handle/10665/63529/WHOQOL-BREF.pdf?sequence=1" target="_blank" class="reference-link">Hướng dẫn sử dụng</a></p>
             </div>
-            <div class="space-y-3 text-gray-700">
-                <div class="flex justify-between items-center bg-gray-50 p-3 rounded-md">
-                    <span class="font-semibold">1. Sức khỏe thể chất:</span>
-                    <span id="score-physical" class="font-bold text-lg text-blue-600">0</span>
+            <div class="space-y-4 text-gray-700">
+                <!-- Physical -->
+                <div class="bg-gray-50 p-4 rounded-md">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="font-semibold">1. Sức khỏe thể chất (Đau đớn, năng lượng, di chuyển):</span>
+                        <span id="score-physical" class="font-bold text-lg text-blue-600">0</span>
+                    </div>
+                    <p id="interpret-physical" class="text-sm mb-2">Ý nghĩa: [Tự động điền]</p>
+                    <p id="suggest-physical" class="text-xs text-green-600">Cải thiện: [Tự động điền]</p>
                 </div>
-                <div class="flex justify-between items-center bg-gray-50 p-3 rounded-md">
-                    <span class="font-semibold">2. Tâm lý:</span>
-                    <span id="score-psychological" class="font-bold text-lg text-green-600">0</span>
+                <!-- Psychological -->
+                <div class="bg-gray-50 p-4 rounded-md">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="font-semibold">2. Tâm lý (Ý nghĩa sống, tự tin):</span>
+                        <span id="score-psychological" class="font-bold text-lg text-green-600">0</span>
+                    </div>
+                    <p id="interpret-psychological" class="text-sm mb-2">Ý nghĩa: [Tự động điền]</p>
+                    <p id="suggest-psychological" class="text-xs text-green-600">Cải thiện: [Tự động điền]</p>
                 </div>
-                <div class="flex justify-between items-center bg-gray-50 p-3 rounded-md">
-                    <span class="font-semibold">3. Quan hệ xã hội:</span>
-                    <span id="score-social" class="font-bold text-lg text-purple-600">0</span>
+                <!-- Social -->
+                <div class="bg-gray-50 p-4 rounded-md">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="font-semibold">3. Quan hệ xã hội (Mối quan hệ, hỗ trợ):</span>
+                        <span id="score-social" class="font-bold text-lg text-purple-600">0</span>
+                    </div>
+                    <p id="interpret-social" class="text-sm mb-2">Ý nghĩa: [Tự động điền]</p>
+                    <p id="suggest-social" class="text-xs text-green-600">Cải thiện: [Tự động điền]</p>
                 </div>
-                <div class="flex justify-between items-center bg-gray-50 p-3 rounded-md">
-                    <span class="font-semibold">4. Môi trường:</span>
-                    <span id="score-environment" class="font-bold text-lg text-red-600">0</span>
+                <!-- Environment -->
+                <div class="bg-gray-50 p-4 rounded-md">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="font-semibold">4. Môi trường (An toàn, dịch vụ, ô nhiễm):</span>
+                        <span id="score-environment" class="font-bold text-lg text-red-600">0</span>
+                    </div>
+                    <p id="interpret-environment" class="text-sm mb-2">Ý nghĩa: [Tự động điền]</p>
+                    <p id="suggest-environment" class="text-xs text-green-600">Cải thiện: [Tự động điền]</p>
                 </div>
                 <div class="flex justify-between items-center bg-blue-100 text-blue-800 p-4 rounded-lg mt-4">
                     <span class="font-bold text-lg">Điểm QoL tổng thể:</span>
                     <span id="score-average" class="font-extrabold text-2xl">0</span>
                 </div>
+                <div class="mt-4 text-center text-sm text-gray-600 border-t pt-4">
+                    <p id="qol-interpretation">Tổng thể: [Tự động điền]</p>
+                </div>
             </div>
-             <div class="mt-6 text-center text-sm text-gray-600 border-t pt-4">
-                <p id="qol-interpretation"></p>
-            </div>
-            <div class="mt-8 text-center">
-                <button id="close-qol-modal-btn" class="bg-gray-500 text-white px-6 py-2 rounded-md hover:bg-gray-600 transition duration-300">Đóng</button>
+            <div class="mt-8 text-center space-x-2">
+                <!-- Loại bỏ nút tải PDF, chỉ giữ nút đóng -->
+                <button id="close-qol-modal-btn" class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600">Đóng</button>
             </div>
         </div>
     </div>
@@ -288,6 +400,7 @@ const firebaseConfig = {
         const surveyCounter = document.getElementById('survey-counter');
         const qolResultsModal = document.getElementById('qol-results-modal');
         const closeQolModalBtn = document.getElementById('close-qol-modal-btn');
+        // Loại bỏ tham chiếu đến downloadReportBtn vì không còn nút tải PDF
         const locateMeBtn = document.getElementById('locate-me-btn');
         const showFormBtn = document.getElementById('show-form-btn');
         const cancelFormBtn = document.getElementById('cancel-form-btn');
@@ -297,38 +410,38 @@ const firebaseConfig = {
         let selectedCoords = null;
 
         const whoqolQuestions = [
-            { id: 'q1', text: '1. Bạn đánh giá thế nào về chất lượng cuộc sống của bạn?', options: ['Rất tồi', 'Tồi', 'Trung bình', 'Tốt', 'Rất tốt'] },
-            { id: 'q2', text: '2. Bạn có hài lòng với sức khỏe của bạn không?', options: ['Rất không hài lòng', 'Không hài lòng', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
-            { id: 'q3', text: '3. Thương tật thể xác cản trở bạn thế nào?', options: ['Không', 'Ít', 'Trung bình', 'Nhiều', 'Rất nhiều'], reverse: true },
-            { id: 'q4', text: '4. Bạn cần chăm sóc y tế ở mức độ nào?', options: ['Không', 'Ít', 'Trung bình', 'Nhiều', 'Rất nhiều'], reverse: true },
-            { id: 'q5', text: '5. Bạn hài lòng với cuộc sống hiện tại thế nào?', options: ['Không', 'Ít', 'Trung bình', 'Nhiều', 'Rất nhiều'] },
-            { id: 'q6', text: '6. Bạn có cảm thấy cuộc sống của bạn có ý nghĩa không?', options: ['Không', 'Ít', 'Trung bình', 'Nhiều', 'Rất nhiều'] },
-            { id: 'q7', text: '7. Khả năng tập trung của bạn thế nào?', options: ['Không', 'Ít', 'Trung bình', 'Cao', 'Rất cao'] },
-            { id: 'q8', text: '8. Mức độ bạn cảm thấy an toàn trong cuộc sống là thế nào?', options: ['Không', 'Ít', 'Trung bình', 'Cao', 'Rất cao'] },
-            { id: 'q9', text: '9. Môi trường sống của bạn lành mạnh thế nào?', options: ['Không', 'Ít', 'Trung bình', 'Cao', 'Rất cao'] },
-            { id: 'q10', text: '10. Bạn có cảm thấy đủ sức lực cho hoạt động thường ngày không?', options: ['Không', 'Ít', 'Trung bình', 'Tương đối', 'Hoàn toàn'] },
-            { id: 'q11', text: '11. Bạn có chấp nhận được ngoại hình của bạn không?', options: ['Không', 'Ít', 'Trung bình', 'Tương đối', 'Hoàn toàn'] },
-            { id: 'q12', text: '12. Bạn có đủ tiền cho nhu cầu cá nhân không?', options: ['Không', 'Ít', 'Trung bình', 'Tương đối', 'Hoàn toàn'] },
-            { id: 'q13', text: '13. Thông tin bạn cần có được cập nhật hàng ngày không?', options: ['Không', 'Ít', 'Trung bình', 'Tương đối', 'Hoàn toàn'] },
-            { id: 'q14', text: '14. Bạn có vui chơi giải trí không?', options: ['Không', 'Ít', 'Trung bình', 'Nhiều', 'Rất nhiều'] },
-            { id: 'q15', text: '15. Bạn có đi lại được tốt không?', options: ['Rất tồi', 'Tồi', 'Trung bình', 'Tốt', 'Rất tốt'] },
-            { id: 'q16', text: '16. Bạn hài lòng với giấc ngủ của mình thế nào?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
-            { id: 'q17', text: '17. Bạn hài lòng với khả năng sinh hoạt hàng ngày thế nào?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
-            { id: 'q18', text: '18. Bạn hài lòng về khả năng làm việc của bạn thế nào?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
-            { id: 'q19', text: '19. Bạn hài lòng với chính bản thân bạn thế nào?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
-            { id: 'q20', text: '20. Bạn hài lòng về mối quan hệ cá nhân thế nào?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
-            { id: 'q21', text: '21. Bạn hài lòng về đời sống tình dục thế nào?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
-            { id: 'q22', text: '22. Bạn hài lòng về sự giúp đỡ từ bạn bè thế nào?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
-            { id: 'q23', text: '23. Bạn hài lòng về điều kiện vật chất nơi ở thế nào?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
-            { id: 'q24', text: '24. Bạn hài lòng về việc tiếp cận dịch vụ y tế thế nào?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
-            { id: 'q25', text: '25. Bạn hài lòng về phương tiện đi lại của bạn thế nào?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'] },
-            { id: 'q26', text: '26. Bạn có thường xuyên có cảm giác tiêu cực không?', options: ['Không bao giờ', 'Hiếm khi', 'Thi thoảng', 'Rất thường xuyên', 'Liên tục'], reverse: true },
+            { id: 'q1', text: '1. Bạn đánh giá thế nào về chất lượng cuộc sống của bạn?', options: ['Rất tồi', 'Tồi', 'Trung bình', 'Tốt', 'Rất tốt'], tooltip: 'Đánh giá tổng quát về QoL của bạn.' },
+            { id: 'q2', text: '2. Bạn có hài lòng với sức khỏe của bạn không?', options: ['Rất không hài lòng', 'Không hài lòng', 'Trung bình', 'Hài lòng', 'Rất hài lòng'], tooltip: 'Hài lòng với sức khỏe tổng quát.' },
+            { id: 'q3', text: '3. Thương tật thể xác cản trở bạn thế nào?', options: ['Không', 'Ít', 'Trung bình', 'Nhiều', 'Rất nhiều'], reverse: true, tooltip: 'Ảnh hưởng của đau đớn hoặc hạn chế thể chất.' },
+            { id: 'q4', text: '4. Bạn cần chăm sóc y tế ở mức độ nào?', options: ['Không', 'Ít', 'Trung bình', 'Nhiều', 'Rất nhiều'], reverse: true, tooltip: 'Phụ thuộc vào thuốc hoặc điều trị y tế.' },
+            { id: 'q5', text: '5. Bạn hài lòng với cuộc sống hiện tại thế nào?', options: ['Không', 'Ít', 'Trung bình', 'Nhiều', 'Rất nhiều'], tooltip: 'Hài lòng tổng thể với cuộc sống.' },
+            { id: 'q6', text: '6. Bạn có cảm thấy cuộc sống của bạn có ý nghĩa không?', options: ['Không', 'Ít', 'Trung bình', 'Nhiều', 'Rất nhiều'], tooltip: 'Cảm nhận về ý nghĩa và mục đích sống.' },
+            { id: 'q7', text: '7. Khả năng tập trung của bạn thế nào?', options: ['Không', 'Ít', 'Trung bình', 'Cao', 'Rất cao'], tooltip: 'Khả năng suy nghĩ, học hỏi, tập trung.' },
+            { id: 'q8', text: '8. Mức độ bạn cảm thấy an toàn trong cuộc sống là thế nào?', options: ['Không', 'Ít', 'Trung bình', 'Cao', 'Rất cao'], tooltip: 'Cảm giác an toàn cá nhân và tài chính.' },
+            { id: 'q9', text: '9. Môi trường sống của bạn lành mạnh thế nào?', options: ['Không', 'Ít', 'Trung bình', 'Cao', 'Rất cao'], tooltip: 'Chất lượng môi trường vật lý (không khí, tiếng ồn).', },
+            { id: 'q10', text: '10. Bạn có cảm thấy đủ sức lực cho hoạt động thường ngày không?', options: ['Không', 'Ít', 'Trung bình', 'Tương đối', 'Hoàn toàn'], tooltip: 'Năng lượng và mệt mỏi hàng ngày.' },
+            { id: 'q11', text: '11. Bạn có chấp nhận được ngoại hình của bạn không?', options: ['Không', 'Ít', 'Trung bình', 'Tương đối', 'Hoàn toàn'], tooltip: 'Tự tin và hình ảnh bản thân.' },
+            { id: 'q12', text: '12. Bạn có đủ tiền cho nhu cầu cá nhân không?', options: ['Không', 'Ít', 'Trung bình', 'Tương đối', 'Hoàn toàn'], tooltip: 'Tài nguyên tài chính.' },
+            { id: 'q13', text: '13. Thông tin bạn cần có được cập nhật hàng ngày không?', options: ['Không', 'Ít', 'Trung bình', 'Tương đối', 'Hoàn toàn'], tooltip: 'Tiếp cận thông tin và kỹ năng.' },
+            { id: 'q14', text: '14. Bạn có vui chơi giải trí không?', options: ['Không', 'Ít', 'Trung bình', 'Nhiều', 'Rất nhiều'], tooltip: 'Cơ hội giải trí và thư giãn.' },
+            { id: 'q15', text: '15. Bạn có đi lại được tốt không?', options: ['Rất tồi', 'Tồi', 'Trung bình', 'Tốt', 'Rất tốt'], tooltip: 'Khả năng di chuyển và hoạt động hàng ngày.' },
+            { id: 'q16', text: '16. Bạn hài lòng với giấc ngủ của mình thế nào?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'], tooltip: 'Chất lượng giấc ngủ.' },
+            { id: 'q17', text: '17. Bạn hài lòng với khả năng sinh hoạt hàng ngày thế nào?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'], tooltip: 'Thực hiện hoạt động hàng ngày.' },
+            { id: 'q18', text: '18. Bạn hài lòng về khả năng làm việc của bạn thế nào?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'], tooltip: 'Khả năng làm việc.' },
+            { id: 'q19', text: '19. Bạn hài lòng với chính bản thân bạn thế nào?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'], tooltip: 'Tự chấp nhận bản thân.' },
+            { id: 'q20', text: '20. Bạn hài lòng về mối quan hệ cá nhân thế nào?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'], tooltip: 'Chất lượng mối quan hệ cá nhân.' },
+            { id: 'q21', text: '21. Bạn hài lòng về đời sống tình dục thế nào?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'], tooltip: 'Hoạt động tình dục.' },
+            { id: 'q22', text: '22. Bạn hài lòng về sự giúp đỡ từ bạn bè thế nào?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'], tooltip: 'Hỗ trợ xã hội từ bạn bè.' },
+            { id: 'q23', text: '23. Bạn hài lòng về điều kiện vật chất nơi ở thế nào?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'], tooltip: 'Điều kiện nhà ở.' },
+            { id: 'q24', text: '24. Bạn hài lòng về việc tiếp cận dịch vụ y tế thế nào?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'], tooltip: 'Tiếp cận chăm sóc y tế.' },
+            { id: 'q25', text: '25. Bạn hài lòng về phương tiện đi lại của bạn thế nào?', options: ['Rất tệ', 'Tệ', 'Trung bình', 'Hài lòng', 'Rất hài lòng'], tooltip: 'Phương tiện giao thông.' },
+            { id: 'q26', text: '26. Bạn có thường xuyên có cảm giác tiêu cực không?', options: ['Không bao giờ', 'Hiếm khi', 'Thi thoảng', 'Rất thường xuyên', 'Liên tục'], reverse: true, tooltip: 'Cảm xúc tiêu cực như lo lắng, buồn bã.' },
         ];
 
         function generateWhoqolForm() {
             const container = document.getElementById('whoqol-questions-container');
             container.innerHTML = whoqolQuestions.map(q => `
-                <div>
+                <div class="whoqol-select" data-tooltip="${q.tooltip || ''}">
                     <label for="${q.id}" class="block font-medium text-gray-600">${q.text}</label>
                     <select id="${q.id}" class="w-full p-2 border rounded-md mt-1" data-reverse="${q.reverse || false}" required>
                         ${q.options.map((opt, i) => `<option value="${i+1}">${opt}</option>`).join('')}
@@ -337,6 +450,28 @@ const firebaseConfig = {
             `).join('');
         }
         generateWhoqolForm();
+
+        // Toggle cho illness detail
+        document.querySelectorAll('input[name="current-illness"]').forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                const container = document.getElementById('illness-detail-container');
+                if (e.target.value === 'yes') {
+                    container.classList.remove('hidden');
+                } else {
+                    container.classList.add('hidden');
+                    document.getElementById('illness-detail').value = '';
+                }
+            });
+        });
+
+        // Toggle cho follow-up email
+        document.getElementById('follow-up-consent').addEventListener('change', (e) => {
+            const container = document.getElementById('email-container');
+            container.classList.toggle('hidden', !e.target.checked);
+            if (!e.target.checked) {
+                document.getElementById('follow-up-email').value = '';
+            }
+        });
 
         function showToast(message, type = 'success') {
             const toast = document.getElementById('toast-notification');
@@ -355,6 +490,23 @@ const firebaseConfig = {
             toastMessage.textContent = message;
             toast.classList.remove('translate-x-full');
             setTimeout(() => toast.classList.add('translate-x-full'), 5000);
+        }
+
+        function getInterpretation(score) {
+            if (score < 50) return "QoL kém: Có nhiều vấn đề nghiêm trọng cần hỗ trợ chuyên nghiệp.";
+            if (score < 70) return "QoL trung bình: Hài lòng vừa phải, nhưng có hạn chế đáng kể.";
+            if (score < 85) return "QoL khá tốt: Hài lòng tương đối cao, nhưng có thể cải thiện một số khía cạnh.";
+            return "QoL rất tốt: Hài lòng cao, ít vấn đề.";
+        }
+
+        function getSuggestion(domain, score) {
+            const suggestions = {
+                physical: "Tập thể dục 30p/ngày, ăn uống cân bằng để tăng năng lượng; kiểm tra y tế định kỳ.",
+                psychological: "Thiền 10p/ngày, ghi nhật ký biết ơn; tham gia nhóm cộng đồng để tăng ý nghĩa sống.",
+                social: "Gặp gỡ bạn bè hàng tuần, tham gia sự kiện địa phương; đi dạo quanh khu vực và trò chuyện với mọi người.",
+                environment: "Trồng cây nhỏ tại nhà, khiếu nại ô nhiễm địa phương; ưu tiên khu vực xanh hơn."
+            };
+            return score < 85 ? suggestions[domain] : "Tiếp tục duy trì lối sống hiện tại.";
         }
 
         function calculateWhoqolScores(whoqolData) {
@@ -384,26 +536,35 @@ const firebaseConfig = {
             return scores;
         }
 
-        function showResultsModal(scores) {
+        function showResultsModal(scores, surveyData) {
             document.getElementById('score-physical').textContent = scores.physical.toFixed(1);
             document.getElementById('score-psychological').textContent = scores.psychological.toFixed(1);
             document.getElementById('score-social').textContent = scores.social.toFixed(1);
             document.getElementById('score-environment').textContent = scores.environment.toFixed(1);
             document.getElementById('score-average').textContent = scores.average.toFixed(1);
             
+            // Diễn giải và gợi ý cho từng lĩnh vực
+            document.getElementById('interpret-physical').textContent = getInterpretation(scores.physical);
+            document.getElementById('suggest-physical').textContent = getSuggestion('physical', scores.physical);
+            document.getElementById('interpret-psychological').textContent = getInterpretation(scores.psychological);
+            document.getElementById('suggest-psychological').textContent = getSuggestion('psychological', scores.psychological);
+            document.getElementById('interpret-social').textContent = getInterpretation(scores.social);
+            document.getElementById('suggest-social').textContent = getSuggestion('social', scores.social);
+            document.getElementById('interpret-environment').textContent = getInterpretation(scores.environment);
+            document.getElementById('suggest-environment').textContent = getSuggestion('environment', scores.environment);
+            
             const avg = scores.average;
-            let interpretationText = "Điểm số này cho thấy chất lượng sống của bạn ở mức kém. Có nhiều vấn đề nghiêm trọng cần được giải quyết. Hãy liên hệ với chúng tôi hoặc các tổ chức uy tín để được hỗ trợ.";
-            if (avg >= 85) {
-                interpretationText = "Mức điểm này cho thấy chất lượng sống của bạn đang ở mức rất tốt. Bạn có sự hài lòng cao với hầu hết các khía cạnh trong cuộc sống.";
-            } else if (avg >= 70) {
-                 interpretationText = "Mức điểm này cho thấy chất lượng sống của bạn đang ở mức tốt. Hầu hết các khía cạnh đều ổn, tuy nhiên vẫn còn một vài lĩnh vực có thể cải thiện.";
-            } else if (avg < 50) {
-                 interpretationText = "Mức điểm này cho thấy chất lượng sống của bạn đang ở mức trung bình. Có thể bạn đang đối mặt với nhiều khó khăn trong các khía cạnh khác nhau của cuộc sống.";
-            }
-            qolInterpretation.textContent = interpretationText;
+            qolInterpretation.textContent = getInterpretation(avg);
 
             qolResultsModal.classList.remove('hidden');
+
+            // Loại bỏ lưu surveyData cho PDF vì không cần nữa
+            // window.currentSurveyData = surveyData; (comment hoặc xóa)
         }
+
+        // Loại bỏ hoàn toàn hàm tải PDF
+        // downloadReportBtn.addEventListener('click', ...) (đã xóa)
+
         closeQolModalBtn.addEventListener('click', () => qolResultsModal.classList.add('hidden'));
 
         if (firebaseReady) {
@@ -446,6 +607,14 @@ const firebaseConfig = {
                 if (!lat || !lng) return showToast("Vui lòng đánh dấu vị trí nơi ở của bạn trước khi lưu.", 'error');
                 if (!userId) return showToast("Chưa xác thực người dùng. Vui lòng đợi.", 'error');
                 
+                // Lấy giá trị radio và text
+                const residencePhase = document.querySelector('input[name="residence-phase"]:checked')?.value || '';
+                const residencePhaseOther = document.getElementById('residence-phase-other').value;
+                const migrationReason = document.querySelector('input[name="migration-reason"]:checked')?.value || '';
+                const migrationReasonOther = document.getElementById('migration-reason-other').value;
+                const currentIllness = document.querySelector('input[name="current-illness"]:checked')?.value || 'no';
+                const illnessDetail = document.getElementById('illness-detail').value;
+
                 const surveyData = {
                     age: document.getElementById('age').value,
                     gender: document.getElementById('gender').value,
@@ -455,12 +624,20 @@ const firebaseConfig = {
                     occupation: document.getElementById('occupation').value,
                     income: document.getElementById('income').value,
                     residenceDuration: document.getElementById('residence-duration').value,
+                    residencePhase: residencePhase,
+                    residencePhaseOther: residencePhaseOther,
+                    migrationReason: migrationReason,
+                    migrationReasonOther: migrationReasonOther,
+                    currentIllness: currentIllness,
+                    illnessDetail: illnessDetail,
                     accessTransport: document.getElementById('access-transport').value,
                     accessHealth: document.getElementById('access-health').value,
                     accessGreen: document.getElementById('access-green').value,
                     noisePollution: document.getElementById('noise-pollution').value,
                     airPollution: document.getElementById('air-pollution').value,
                     userNotes: document.getElementById('user-notes').value,
+                    followUpConsent: document.getElementById('follow-up-consent').checked,
+                    followUpEmail: document.getElementById('follow-up-email').value,
                     whoqol: whoqolQuestions.reduce((acc, q) => {
                         acc[q.id] = document.getElementById(q.id).value;
                         return acc;
@@ -472,7 +649,7 @@ const firebaseConfig = {
                 try {
                     await addDoc(locationsCollection, { surveyData, coords: { lat, lng }, createdAt: serverTimestamp(), userId });
                     showToast("Đã lưu khảo sát thành công!", 'success');
-                    showResultsModal(surveyData.qolScores);
+                    showResultsModal(surveyData.qolScores, surveyData);
                     resetForm();
                 } catch (error) {
                     console.error("Lỗi khi lưu vào Firestore: ", error);
@@ -526,6 +703,10 @@ const firebaseConfig = {
 
         function resetForm() {
             locationForm.reset();
+            document.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
+            document.getElementById('illness-detail-container').classList.add('hidden');
+            document.getElementById('email-container').classList.add('hidden');
+            document.getElementById('follow-up-consent').checked = false;
             latitudeInput.value = '';
             longitudeInput.value = '';
             selectedCoords = null;
@@ -575,4 +756,3 @@ const firebaseConfig = {
     </script>
 </body>
 </html>
-
