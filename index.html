@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -125,13 +126,39 @@
                             </div>
                              <div>
                                 <label for="family-size" class="block font-medium text-sm text-gray-600">Số người trong gia đình (bỏ trống nếu không muốn chia sẻ)</label>
-                                <input type="number" id="family-size" class="w-full p-2 border rounded-md mt-1" min="0">
+                                <input type="number" id="family-size" class="w-full p-2 border rounded-md mt-1" min="1">
                             </div>
                             <div>
                                 <label for="marital-status" class="block font-medium text-sm text-gray-600">Tình trạng hôn nhân</label>
-                                <select id="marital-status" class="w-full p-2 border rounded-md mt-1"><option>Độc thân</option><option>Đã kết hôn</option><option>Ly hôn</option><option>Góa bụa</option><option>Khác</option><option>Không muốn chia sẻ</option</select>
+                                <select id="marital-status" class="w-full p-2 border rounded-md mt-1"><option>Độc thân</option><option>Đã kết hôn</option><option>Ly hôn</option><option>Góa bụa</option><option>Khác</option><option>Không muốn chia sẻ</option></select>
                             </div>
-                            
+                            <div>
+                                <label for="age-difference" class="block font-medium text-sm text-gray-600">Chênh lệch tuổi (Nếu chưa từng kết hôn: chênh lệch tuổi bố-mẹ; Nếu đã từng kết hôn: chênh lệch tuổi chồng-vợ)</label>
+                                <select id="age-difference" class="w-full p-2 border rounded-md mt-1">
+                                    <option value="">Không muốn chia sẻ</option>
+                                    <option value="-10">Người nữ hơn trên 9 năm</option>
+                                    <option value="-9">Người nữ hơn 9 năm</option>
+                                    <option value="-8">Người nữ hơn 8 năm</option>
+                                    <option value="-7">Người nữ hơn 7 năm</option>
+                                    <option value="-6">Người nữ hơn 6 năm</option>
+                                    <option value="-5">Người nữ hơn 5 năm</option>
+                                    <option value="-4">Người nữ hơn 4 năm</option>
+                                    <option value="-3">Người nữ hơn 3 năm</option>
+                                    <option value="-2">Người nữ hơn 2 năm</option>
+                                    <option value="-1">Người nữ hơn 1 năm</option>
+                                    <option value="0">Bằng tuổi</option>
+                                    <option value="1">Người nam hơn 1 năm</option>
+                                    <option value="2">Người nam hơn 2 năm</option>
+                                    <option value="3">Người nam hơn 3 năm</option>
+                                    <option value="4">Người nam hơn 4 năm</option>
+                                    <option value="5">Người nam hơn 5 năm</option>
+                                    <option value="6">Người nam hơn 6 năm</option>
+                                    <option value="7">Người nam hơn 7 năm</option>
+                                    <option value="8">Người nam hơn 8 năm</option>
+                                    <option value="9">Người nam hơn 9 năm</option>
+                                    <option value="10">Người nam hơn trên 9 năm</option>
+                                </select>
+                            </div>
                             <div>
                                 <label for="education" class="block font-medium text-sm text-gray-600">Trình độ học vấn</label>
                                 <select id="education" class="w-full p-2 border rounded-md mt-1"><option>Tiểu học hoặc thấp hơn</option><option>Trung học cơ sở</option><option>Trung học phổ thông</option><option>Cao đẳng/Đại học</option><option>Sau đại học</option><option>Khác</option></select>
@@ -148,9 +175,9 @@
                                     <option>Chuyên môn kỹ thuật, khoa học</option>
                                     <option>Chuyên môn xã hội, giáo dục, y tế</option>
                                     <option>Quản lý, hành chính</option>
-                                    <option>Làm tự do</option>
                                     <option>Thất nghiệp hoặc không làm việc</option>
-                                    <option>Đi học</option>
+                                    <option>Nghề nghiệp tự do</option>
+                                    <option>Đang đi học</option>
                                     <option>Khác</option>
                                 </select>
                             </div>
@@ -189,7 +216,7 @@
                                 <div class="mt-1 space-y-2">
                                     <label class="flex items-center"><input type="radio" name="current-illness" value="no" class="mr-2"> Không</label>
                                     <label class="flex items-center"><input type="radio" name="current-illness" value="yes" class="mr-2"> Có</label>
-                                    <label class="flex items-center"><input type="radio" name="current-illness" value="prefer-not-to-share" class="mr-2"> Không muốn chia sẻ</label>
+                                    <label class="flex items-center"><input type="radio" name="current-illness" value="prefer-not-to-say" class="mr-2"> Không muốn chia sẻ</label>
                                 </div>
                                 <div id="illness-detail-container" class="hidden mt-2">
                                     <label for="illness-detail" class="block font-medium text-sm text-gray-600">Nếu có điều gì đó không ổn với sức khỏe của bạn, bạn nghĩ đó là gì?</label>
@@ -227,7 +254,7 @@
                      <details>
                         <summary>Ghi chú thêm (tùy chọn)</summary>
                         <div class="p-3 border border-t-0 rounded-b-md">
-                            <textarea id="user-notes" class="w-full p-2 border rounded-md" rows="4" placeholder="Bạn có muốn chia sẻ thêm điều gì về môi trường và chất lượng sống trong khu vực không?"></textarea>
+                            <textarea id="user-notes" class="w-full p-2 border rounded-md" rows="4" placeholder="Bạn có muốn chia sẻ thêm điều gì không?"></textarea>
                             <div class="mt-3">
                                 <label class="flex items-center">
                                     <input type="checkbox" id="follow-up-consent" class="mr-2 h-4 w-4">
@@ -291,7 +318,7 @@
                 <p class="mb-2"><strong>Để có dữ liệu chất lượng cao</strong>, xin bạn vui lòng điền thông tin trung thực, đúng với tình trạng cá nhân và tránh cung cấp thông tin nhạy cảm hoặc quá sai lệch.</p>
                 <p class="mb-2"><strong>Cam kết:</strong> Đây là trang web mã nguồn mở. Mọi dữ liệu bạn cung cấp đều được ẩn danh, bảo mật và chỉ được sử dụng cho mục đích nghiên cứu khoa học, phi lợi nhuận. Chúng tôi cam kết tuân thủ các quy định về bảo vệ dữ liệu cá nhân. Kết quả nghiên cứu sẽ được cập nhật trên website này ngay khi chúng tôi hoàn thành nghiên cứu.</p>
                 <p class="mb-2"><strong>Bắt đầu khảo sát:</strong> 13.09.2025 </p>
-                <p class="mb-2"><strong>Cập nhật nội dung lần cuối:</strong> 15.09.2025 </p>
+                <p class="mb-2"><strong>Cập nhật nội dung lần cuối:</strong> 16.09.2025 </p>
                 <p class="mb-2"><strong>Nhóm nghiên cứu của các du học sinh Việt Nam tại Đại học Trắc địa và bản đồ Mát-xcơ-va (LB Nga) chân thành cảm ơn và chúc bạn sức khỏe, hạnh phúc!</strong> </p>
                 <p class="mb-2 text-center">---</p>
             </div>
@@ -647,6 +674,7 @@ const firebaseConfig = {
                     gender: document.getElementById('gender').value,
                     familySize: document.getElementById('family-size').value,
                     maritalStatus: document.getElementById('marital-status').value,
+                    ageDifference: document.getElementById('age-difference').value,
                     education: document.getElementById('education').value,
                     occupation: document.getElementById('occupation').value,
                     income: document.getElementById('income').value,
@@ -737,6 +765,7 @@ const firebaseConfig = {
             document.getElementById('illness-detail-container').classList.add('hidden');
             document.getElementById('email-container').classList.add('hidden');
             document.getElementById('follow-up-consent').checked = false;
+            document.getElementById('age-difference').value = '';
             latitudeInput.value = '';
             longitudeInput.value = '';
             selectedCoords = null;
@@ -786,3 +815,4 @@ const firebaseConfig = {
     </script>
 </body>
 </html>
+```
