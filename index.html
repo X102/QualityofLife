@@ -124,12 +124,12 @@
                                 <select id="gender" class="w-full p-2 border rounded-md mt-1"><option>Nam</option><option>Nữ</option></select>
                             </div>
                              <div>
-                                <label for="family-size" class="block font-medium text-sm text-gray-600">Số người trong gia đình</label>
-                                <input type="number" id="family-size" class="w-full p-2 border rounded-md mt-1" min="1">
+                                <label for="family-size" class="block font-medium text-sm text-gray-600">Số người trong gia đình (nhập 0 nếu không muốn chia sẻ)</label>
+                                <input type="number" id="family-size" class="w-full p-2 border rounded-md mt-1" min="0">
                             </div>
                             <div>
                                 <label for="marital-status" class="block font-medium text-sm text-gray-600">Tình trạng hôn nhân</label>
-                                <select id="marital-status" class="w-full p-2 border rounded-md mt-1"><option>Độc thân</option><option>Đã kết hôn</option><option>Ly hôn</option><option>Góa bụa</option><option>Khác</option></select>
+                                <select id="marital-status" class="w-full p-2 border rounded-md mt-1"><option>Độc thân</option><option>Đã kết hôn</option><option>Ly hôn</option><option>Góa bụa</option><option>Khác</option><option>Không muốn chia sẻ</option</select>
                             </div>
                             <div>
                                 <label for="education" class="block font-medium text-sm text-gray-600">Trình độ học vấn</label>
@@ -147,13 +147,15 @@
                                     <option>Chuyên môn kỹ thuật, khoa học</option>
                                     <option>Chuyên môn xã hội, giáo dục, y tế</option>
                                     <option>Quản lý, hành chính</option>
+                                    <option>Làm tự do</option>
                                     <option>Thất nghiệp hoặc không làm việc</option>
+                                    <option>Đi học</option>
                                     <option>Khác</option>
                                 </select>
                             </div>
                             <div>
                                 <label for="income" class="block font-medium text-sm text-gray-600">Thu nhập trung bình cả gia đình/tháng</label>
-                                <select id="income" class="w-full p-2 border rounded-md mt-1"><option>&lt; 5 triệu</option><option>5 - 20 triệu</option><option>20 - 50 triệu</option><option>50 - 100 triệu</option><option>&gt; 100 triệu</option></select>
+                                <select id="income" class="w-full p-2 border rounded-md mt-1"><option>&lt; 5 triệu</option><option>5 - 20 triệu</option><option>20 - 50 triệu</option><option>50 - 100 triệu</option><option>&gt; 100 triệu</option><option>Không muốn chia sẻ</option></select>
                             </div>
 
                             <!-- Câu hỏi mới: Vị trí đại diện cho giai đoạn nào -->
@@ -186,6 +188,7 @@
                                 <div class="mt-1 space-y-2">
                                     <label class="flex items-center"><input type="radio" name="current-illness" value="no" class="mr-2"> Không</label>
                                     <label class="flex items-center"><input type="radio" name="current-illness" value="yes" class="mr-2"> Có</label>
+                                    <label class="flex items-center"><input type="radio" name="current-illness" value="prefer-not-to-share" class="mr-2"> Không muốn chia sẻ</label>
                                 </div>
                                 <div id="illness-detail-container" class="hidden mt-2">
                                     <label for="illness-detail" class="block font-medium text-sm text-gray-600">Nếu có điều gì đó không ổn với sức khỏe của bạn, bạn nghĩ đó là gì?</label>
@@ -223,7 +226,7 @@
                      <details>
                         <summary>Ghi chú thêm (tùy chọn)</summary>
                         <div class="p-3 border border-t-0 rounded-b-md">
-                            <textarea id="user-notes" class="w-full p-2 border rounded-md" rows="4" placeholder="Bạn có muốn chia sẻ thêm điều gì không?"></textarea>
+                            <textarea id="user-notes" class="w-full p-2 border rounded-md" rows="4" placeholder="Bạn có muốn chia sẻ thêm điều gì về môi trường và chất lượng sống trong khu vực không?"></textarea>
                             <div class="mt-3">
                                 <label class="flex items-center">
                                     <input type="checkbox" id="follow-up-consent" class="mr-2 h-4 w-4">
