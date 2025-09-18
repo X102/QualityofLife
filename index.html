@@ -1,4 +1,4 @@
-
+```html
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -212,7 +212,7 @@
                             </div>
                             <!-- Câu hỏi mới: Sức khỏe hiện tại - Cải thiện theo yêu cầu -->
                             <div>
-                                <label class="block font-medium text-sm text-gray-600">Bạn hiện đang bệnh?</label>
+                                <label class="block font-medium text-sm text-gray-600">Bạn hiện có đang bị bệnh không?</label>
                                 <div class="mt-1 space-y-2">
                                     <label class="flex items-center"><input type="radio" name="current-illness" value="no" class="mr-2"> Không</label>
                                     <label class="flex items-center"><input type="radio" name="current-illness" value="yes" class="mr-2"> Có</label>
@@ -318,7 +318,7 @@
                 <p class="mb-2"><strong>Để có dữ liệu chất lượng cao</strong>, xin bạn vui lòng điền thông tin trung thực, đúng với tình trạng cá nhân và tránh cung cấp thông tin nhạy cảm hoặc quá sai lệch.</p>
                 <p class="mb-2"><strong>Cam kết:</strong> Đây là trang web mã nguồn mở. Mọi dữ liệu bạn cung cấp đều được ẩn danh, bảo mật và chỉ được sử dụng cho mục đích nghiên cứu khoa học, phi lợi nhuận. Chúng tôi cam kết tuân thủ các quy định về bảo vệ dữ liệu cá nhân. Kết quả nghiên cứu sẽ được cập nhật trên website này ngay khi chúng tôi hoàn thành nghiên cứu.</p>
                 <p class="mb-2"><strong>Bắt đầu khảo sát:</strong> 13.09.2025 </p>
-                <p class="mb-2"><strong>Cập nhật nội dung lần cuối:</strong> 16.09.2025 </p>
+                <p class="mb-2"><strong>Cập nhật nội dung lần cuối:</strong> 15.09.2025 </p>
                 <p class="mb-2"><strong>Nhóm nghiên cứu của các du học sinh Việt Nam tại Đại học Trắc địa và bản đồ Mát-xcơ-va (LB Nga) chân thành cảm ơn và chúc bạn sức khỏe, hạnh phúc!</strong> </p>
                 <p class="mb-2 text-center">---</p>
             </div>
@@ -787,9 +787,9 @@ const firebaseConfig = {
             if (tempMarker) map.removeLayer(tempMarker);
             tempMarker = L.marker([lat, lng]).addTo(map);
             if (addPointFormContainer.classList.contains('hidden')) {
-                 tempMarker.bindPopup("Vị trí đã chọn. Hãy bắt đầu khảo sát.").openPopup();
+                 tempMarker.bindPopup("Vị trí đã chọn. Hãy mở lại menu và tiếp tục khảo sát.").openPopup();
             } else {
-                 tempMarker.bindPopup("Vị trí đã chọn. Hãy điền khảo sát bên trái.").openPopup();
+                 tempMarker.bindPopup("Vị trí đã chọn. Hãy điền tiếp khảo sát ở menu.").openPopup();
             }
         }
         
@@ -815,4 +815,4 @@ const firebaseConfig = {
     </script>
 </body>
 </html>
-
+```
